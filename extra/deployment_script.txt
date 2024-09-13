@@ -1,0 +1,43 @@
+## SET VARIABLES
+echo nta /tmp 'https://github.com/fridde/nta.git' | read PROJECT_NAME STAGING GITHUB
+
+cd ~/projekt/$PROJECT_NAME
+sf-dmm
+
+composer install --no-scripts
+
+git status
+git add -A && git commit -m "More work"
+git push
+
+# winphp ./vendor/bin/phpunit
+
+cd $STAGING
+
+archive_project $PROJECT_NAME
+check_max_nr_of_files 15
+
+git clone $GITHUB --depth=1 && cd $PROJECT_NAME
+
+cp ~/projekt/$PROJECT_NAME/{.env.prod.local,deployment.php} .
+
+echo 'APP_ENV=prod' > .env.local
+
+cd ~/projekt/$PROJECT_NAME
+
+cons assets:install
+cp -r public/{build,bundles} $STAGING/$PROJECT_NAME/public
+
+cd $STAGING/$PROJECT_NAME
+
+deployment deployment.php
+
+ssh_to nta
+cd ~/domains/nta.sigtunanaturskola.se/public_html/
+./bin/console doctrine:migrations:migrate -n
+composer install --no-scripts --no-dev --optimize-autoloader --classmap-authoritative
+./bin/console cache:clear --no-warmup
+composer dump-env prod
+exit
+
+# Script finished! Bye!
