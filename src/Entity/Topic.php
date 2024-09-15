@@ -2,15 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\BoxRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: BoxRepository::class), ORM\Table(name: "boxes")]
-class Box 
+#[ORM\Entity, ORM\Table(name: "topics")]
+class Topic 
 {
     #[ORM\Id, ORM\Column]
     protected string $id;
 
+    #[ORM\Column(unique: true)]
+    protected string $Name;
 
+    
 
 }

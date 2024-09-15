@@ -5,7 +5,7 @@ return [
     'Naturskolan' => [
         'remote' => 'ftp://sigtunanaturskola.se/public_html',
         'user' => 'userE@sigtunanaturskola.se',
-        'password' => 'aErXjaJBxKBYJRmVwWCD',
+        'password' => 'uvmMP3SexhV9HqgKpYY5',
         'local' => '.',
         'passiveMode' => true,
         'ignore' => '
