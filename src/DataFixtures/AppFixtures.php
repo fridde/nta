@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Box;
+use App\Entity\School;
 use App\Entity\Topic;
 use App\Entity\User;
 
@@ -29,10 +30,10 @@ class AppFixtures extends Fixture
         User::class,
         Box::class,
         Topic::class,
+        School::class
     ];
 
-    private static array $manyToMany = [
-        'colleagues_visits'
+    private static array $manyToMany = [        
     ];
 
     private static array $convertToDate = [
@@ -43,13 +44,12 @@ class AppFixtures extends Fixture
 
 
     public function load(ObjectManager $manager): void
-
     {
         $this->om = $manager;
 
         $reader = IOFactory::createReader('Ods');
         $reader->setReadDataOnly(true);
-        $workbook = $reader->load(__DIR__ . '/test_data_nnta.ods');
+        $workbook = $reader->load(__DIR__ . '/test_data_nta.ods');
         $sheets = $workbook->getAllSheets();
 
         /** @var EntityManagerInterface $em */
@@ -112,9 +112,19 @@ class AppFixtures extends Fixture
         return $u;
     }
 
+    private function createBox(array $row): Box
+    {
+        return new Box();
+    }
+
     private function createTopic(): Topic
     {
         return new Topic();
+    }
+
+    private function createSchool(array $row): School
+    {
+        return new School();
     }
 
     private function combineManyToMany(array $row, string $table): void

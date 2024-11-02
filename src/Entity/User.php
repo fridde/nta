@@ -21,4 +21,60 @@ class User
 
     #[ORM\Column(unique: true)]
     protected string $Mail;
+
+    #[ORM\ManyToOne(inversedBy:"Users")]
+    protected School $School;
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->FirstName;
+    }
+
+    public function setFirstName(?string $FirstName): void
+    {
+        $this->FirstName = $FirstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->LastName;
+    }
+
+    public function setLastName(?string $LastName): void
+    {
+        $this->LastName = $LastName;
+    }
+
+    public function getMail(): ?string
+    {
+        return $this->Mail;
+    }
+
+    public function setMail(?string $Mail): void
+    {
+        $this->Mail = mb_strtolower(trim($Mail));
+    }
+
+    public function getSchool(): School
+    {
+        return $this->School;
+    }
+
+    public function setSchool(School $School): void
+    {
+        $this->School = $School;
+    }
+
+    
 }
