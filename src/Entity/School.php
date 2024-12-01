@@ -4,13 +4,14 @@ namespace App\Entity;
 
 use App\Repository\BoxRepository;
 use App\Repository\SchoolRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SchoolRepository::class), ORM\Table(name: "schools")]
 class School
 {
-    #[ORM\Id, ORM\Column]
+    #[ORM\Id, ORM\Column(length: 8, unique: true)]
     protected string $id;
 
     #[ORM\Column]
@@ -19,13 +20,18 @@ class School
     #[ORM\Column]
     protected int $RouteOrder;
 
-    #[ORM\OneToMany(mappedBy: "School", targetEntity: User::class)]
-    #[ORM\OrderBy(["FirstName" => "ASC"])]
-    protected Collection $Users;
+//    #[ORM\OneToMany(targetEntity: User::class, mappedBy: "School")]
+//    #[ORM\OrderBy(["FirstName" => "ASC"])]
+//    protected Collection $Users;
 
     public function __construct()
     {
-        $this->Users = new Collection();
+//        $this->Users = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return mb_strtoupper($this->getId());
     }
 
     public function getId(): string

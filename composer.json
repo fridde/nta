@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^2.13",
@@ -24,6 +24,7 @@
         "symfony/runtime": "7.1.*",
         "symfony/yaml": "7.1.*",
         "thenetworg/oauth2-azure": "^2.2"
+
     },
     "config": {
         "allow-plugins": {
@@ -76,7 +77,9 @@
         }
     },
     "require-dev": {
+        "ext-xdebug": "*",
         "doctrine/doctrine-fixtures-bundle": "^3.6",
-        "phpoffice/phpspreadsheet": "^2.2"
+        "phpoffice/phpspreadsheet": "^2.2",
+        "symfony/maker-bundle": "^1.61"
     }
 }

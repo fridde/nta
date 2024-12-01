@@ -11,8 +11,14 @@ class Box
     #[ORM\Id, ORM\Column]
     protected string $id;
 
-    #[ORM\Column]
+
+    #[ORM\ManyToOne(targetEntity: Topic::class)]
     protected Topic $Topic;
+
+    public function __toString(): string
+    {
+        return mb_strtoupper($this->getId());
+    }
 
     public function getId(): string
     {
@@ -22,6 +28,11 @@ class Box
     public function setId(string $id): void
     {
         $this->id = $id;
+    }
+
+    public function getFormattedId(): string
+    {
+        return mb_strtoupper($this->getId());
     }
 
     public function getTopic(): Topic

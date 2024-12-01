@@ -14,11 +14,19 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use Psr\Log\LoggerInterface;
 use ReflectionClass;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class AppFixtures extends Fixture 
 {
     private ObjectManager $om;
+
+    public function __construct(private LoggerInterface $logger)
+    {
+
+    }
 
     private static array $specialCases = [
         'CalendarEvent' => ['_Location'],
@@ -27,7 +35,7 @@ class AppFixtures extends Fixture
     ];
 
     private static array $convertToEntity = [
-        User::class,
+        //User::class,
         Box::class,
         Topic::class,
         School::class
@@ -45,6 +53,8 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+
+
         $this->om = $manager;
 
         $reader = IOFactory::createReader('Ods');
@@ -57,19 +67,19 @@ class AppFixtures extends Fixture
         $conn = $em->getConnection();
         $conn->setAutoCommit(false);
 
-        try {
-            // @$conn->executeQuery('TRUNCATE recordings;');
-        } catch (\Exception $e) {
+//        try {
+//            // @$conn->executeQuery('TRUNCATE recordings;');
+//        } catch (\Exception $e) {
+//
+//        }
 
-        }
-
-        foreach ($sheets as $sheet) {
-            $title = $sheet->getTitle();
+        foreach ($sheets as $sheetObject) {
+            $title = $sheetObject->getTitle();
 
             if (self::isIgnored($title)) {
                 continue;
             }
-            $rows = $sheet->toArray();
+            $rows = $sheetObject->toArray();
             $headers = array_shift($rows);
             $rows = array_map(fn($r) => array_combine($headers, $r), $rows);
 
@@ -95,19 +105,13 @@ class AppFixtures extends Fixture
 
     }
 
-    // private function createSchool(): School
-    // {
-    //     return new School();
-    // }
-
-
     private function createUser(array $row): User
     {
         $u = new User();
-        $roles = $row['Roles'] ?? [];
-        if (!empty($roles)) {
-            //$u->addRoles(explode(',', $roles));
-        }
+//        $roles = $row['Roles'] ?? [];
+//        if (!empty($roles)) {
+//            //$u->addRoles(explode(',', $roles));
+//        }
 
         return $u;
     }
@@ -117,7 +121,7 @@ class AppFixtures extends Fixture
         return new Box();
     }
 
-    private function createTopic(): Topic
+    private function createTopic(array $row): Topic
     {
         return new Topic();
     }
@@ -139,17 +143,21 @@ class AppFixtures extends Fixture
     private function setStandardValues($object, $row, $exceptions = []): void
     {
         $this->setShortToLongArray();
+
         $shortNames = array_keys($this->shortToLong);
+
 
         foreach ($row as $header => $value) {
             if (self::isIgnored($header) || in_array($header, $exceptions, true)) {
                 continue;
             }
             if (in_array($header, $shortNames, true)) {
+
                 $repo = $this->om->getRepository($this->shortToLong[$header]);
                 if ($value !== null) {
                     $value = $repo->find($value);
                 }
+
             }
             if (in_array($header, self::$convertToDate, true)) {
                 $value = empty($value) ? null : new \DateTime($value);

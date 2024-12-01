@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: UserRepository::class), ORM\Table(name: "users")]
-class User 
+class User
 {
-    
+
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
-    protected int $id; 
+    protected int $id;
 
     #[ORM\Column(nullable: true)]
     protected ?string $FirstName;
@@ -22,8 +24,10 @@ class User
     #[ORM\Column(unique: true)]
     protected string $Mail;
 
-    #[ORM\ManyToOne(inversedBy:"Users")]
+    #[ORM\ManyToOne(targetEntity: School::class)]
     protected School $School;
+
+    protected Collection $Bookings;
 
     public function getId(): int
     {
@@ -76,5 +80,5 @@ class User
         $this->School = $School;
     }
 
-    
+
 }
