@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ItemRepository;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -41,7 +41,7 @@ class Item
 
     public function __construct()
     {
-        $this->InventoryStatusUpdates = new ExtendedCollection();
+        $this->InventoryStatusUpdates = new Coll();
     }
 
     public function getId(): string

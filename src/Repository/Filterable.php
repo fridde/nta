@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\Common\Collections\Order;
@@ -82,12 +82,12 @@ trait Filterable
         return $this;
     }
 
-    public function getMatching(): ExtendedCollection
+    public function getMatching(): Coll
     {
         $results = $this->matching($this->getCriteria());
         $this->resetCriteria();
 
-        return new ExtendedCollection($results->toArray());
+        return new Coll($results->toArray());
     }
 
 }

@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Box;
+use App\Entity\CourseRegistration;
 use App\Entity\School;
 use App\Entity\User;
+use App\Repository\BookingRepository;
+use App\Repository\CourseRegistrationRepository;
 use App\Utils\RepoContainer;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,21 +26,26 @@ class SchoolPageController extends AbstractController
     #[Template('school_page.html.twig')]
     public function showSchoolPage(School $school): array
     {
-
-        $users = $this->rc->getUserRepo()
-            ->hasSchool($school)
-            ->getMatching();
+        $users = $this->rc->getUserRepo()->hasSchool($school)->getMatching();
 
         $qualifications = $this->rc->getQualificationRepo()->forUsers($users)->getMatching();
+
         $courseRegistrations = $this->rc->getCourseRegistrationRepo()->forUsers($users)->getMatching();
+        $courseRegistrations = CourseRegistrationRepository::removeAlreadyQualified($courseRegistrations, $qualifications);
+        $courseRegistrations = CourseRegistrationRepository::splitByTopic($courseRegistrations);
 
         $bookings = $this->rc->getBookingRepo()->getBookingsFromSchool($school);
+        $bookings = BookingRepository::splitByPeriod($bookings);
 
         return [
             'users' => $users,
             'bookings' => $bookings,
             'qualifications' => $qualifications,
             'courseRegistrations' => $courseRegistrations,
+            'formatted' => [
+                'periods' => $this->rc->getPeriodRepo()->getFormattedPeriods(),
+                'topics' => $this->rc->getTopicRepo()->getFormattedTopics()
+            ]
         ];
     }
 }

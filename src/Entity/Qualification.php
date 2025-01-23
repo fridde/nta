@@ -62,4 +62,11 @@ class Qualification
     {
         $this->Date = $Date;
     }
+
+    public function hasTopicAndUser(Topic $Topic, User $User): bool
+    {
+        $sameTopic = $this->getTopic()->getId() === $Topic->getId();
+
+        return $sameTopic && $this->getUser()->getId() === $User->getId();
+    }
 }

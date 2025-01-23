@@ -6,7 +6,7 @@ use Closure;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class ExtendedCollection extends ArrayCollection
+class Coll extends ArrayCollection
 {
 
     public function __construct(array|Collection $elements = null)
@@ -38,12 +38,12 @@ class ExtendedCollection extends ArrayCollection
         return $this->createFrom($elements);
     }
 
-    public function attach(ExtendedCollection $collection): self
+    public function attach(Coll $collection): self
     {
         return $this->createFrom(array_merge($this->toArray(), $collection->toArray()));
     }
 
-    public function attachTo(int|string $key, ExtendedCollection $collection): self
+    public function attachTo(int|string $key, Coll $collection): self
     {
         $innerArray = $this->get($key);
         if (!($innerArray instanceof self)) {
@@ -135,7 +135,7 @@ class ExtendedCollection extends ArrayCollection
         return $key === false ? null : $key;
     }
 
-    public function searchAll(mixed $value): ExtendedCollection
+    public function searchAll(mixed $value): Coll
     {
         $keys = array_keys($this->toArray(), $value, true);
 

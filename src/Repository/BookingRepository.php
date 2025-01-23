@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Booking;
 use App\Entity\Period;
 use App\Entity\School;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Doctrine\ORM\EntityRepository;
 
 
@@ -15,16 +15,16 @@ class BookingRepository extends EntityRepository
 
     public function hasPeriod(Period $period): self
     {
-        $this->addAndFilter('Period', $period->getId());
+        return $this->addAndFilter('Period', $period->getId());
     }
 
-    public function getBookingsFromSchool(School $school): ExtendedCollection
+    public function getBookingsFromSchool(School $school): Coll
     {
-        return ExtendedCollection::create($this->findAll())
+        return Coll::create($this->findAll())
             ->filter(fn(Booking $b) => $b->getBoxOwner()->hasSchool($school));
     }
 
-    public function getBookingsForPeriod(Period $period): ExtendedCollection
+    public function getBookingsForPeriod(Period $period): Coll
     {
         return $this->hasPeriod($period)->getMatching();
     }
@@ -32,5 +32,17 @@ class BookingRepository extends EntityRepository
     public function compileBoxOccupancyByTopicForPeriod(Period $period): array
     {
         // TODO: implement this
+    }
+
+    public static function splitByPeriod(Coll $Bookings): array
+    {
+        $result = [];
+        $Bookings->walk(function(Booking $b) use(&$result) {
+            $pId = $b->getPeriod()->getId();
+            $result[$pId] ??= Coll::create();
+            $result[$pId]->add($b);
+        });
+
+        return $result;
     }
 }

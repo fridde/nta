@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TopicRepository;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,8 +27,8 @@ class Topic
 
     public function __construct()
     {
-        $this->Bookings = new ExtendedCollection();
-        $this->Boxes = new ExtendedCollection();
+        $this->Bookings = new Coll();
+        $this->Boxes = new Coll();
     }
 
     public function __toString(): string

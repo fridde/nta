@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Enums\Semester;
 use App\Repository\PeriodRepository;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,14 +27,24 @@ class Period
     #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: "Period")]
     private Collection $Bookings;
 
-    public function __construct()
+    public function __construct(\DateTime|null $fromDate = null)
     {
-        $this->Bookings = new ExtendedCollection();
+        if($fromDate instanceof DateTime) {
+            $date = Carbon::instance($fromDate);
+            $semester = Semester::getSemesterForDate($date);
+            $this->setId($date->year . '.' . $semester->value);
+        }
+        $this->Bookings = new Coll();
     }
 
     public function __toString(): string
     {
         return $this->getSemester()->name . ' ' . $this->getYear();
+    }
+
+    public function equals(Period $period): bool
+    {
+        return $this->id === $period->getId();
     }
 
     public function getId(): string
@@ -102,6 +112,25 @@ class Period
     public function setBookings(Collection $Bookings): void
     {
         $this->Bookings = $Bookings;
+    }
+
+    public function isCurrent(): bool
+    {
+        $period = new Period(Carbon::now());
+
+        return $this->equals($period);
+    }
+
+    public function isNext(): bool
+    {
+        $period = new Period(Carbon::now()->addDays(180));
+
+        return $this->equals($period);
+    }
+
+    public function isCurrentOrNext(): bool
+    {
+        return $this->isCurrent() || $this->isNext();
     }
 
 

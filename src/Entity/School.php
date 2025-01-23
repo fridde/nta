@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BoxRepository;
 use App\Repository\SchoolRepository;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,7 +27,7 @@ class School
 
     public function __construct()
     {
-        $this->Users = new ExtendedCollection();
+        $this->Users = new Coll();
     }
 
     public function __toString(): string

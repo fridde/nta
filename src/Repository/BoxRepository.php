@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Box;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Doctrine\ORM\EntityRepository;
 
 class BoxRepository extends EntityRepository
@@ -11,7 +11,7 @@ class BoxRepository extends EntityRepository
 
     public function getBoxSetCount(): array
     {
-        $boxSets = ExtendedCollection::create($this->findAll())
+        $boxSets = Coll::create($this->findAll())
             ->map(fn(Box $box) => $box->getTopic()->getId() . '.' . $box->getId())
             ->unique()
             ->map(fn(string $box) => explode('.', $box)[0])
@@ -20,7 +20,7 @@ class BoxRepository extends EntityRepository
         return array_count_values($boxSets);
     }
 
-    public static function getNumberOfBoxSetsFromBoxes(ExtendedCollection $boxes): int
+    public static function getNumberOfBoxSetsFromBoxes(Coll $boxes): int
     {
         return $boxes
             ->map(fn(Box $b) => $b->getBoxNumber())

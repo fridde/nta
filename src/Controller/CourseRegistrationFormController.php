@@ -7,7 +7,7 @@ use App\Entity\Qualification;
 use App\Entity\School;
 use App\Entity\User;
 use App\Form\CourseRegistrationFormType;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use App\Utils\RepoContainer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -57,7 +57,7 @@ class CourseRegistrationFormController extends AbstractController
     }
 
 
-    private function getQualificationsAndRegistrations(ExtendedCollection $users): array
+    private function getQualificationsAndRegistrations(Coll $users): array
     {
         $return = [];
 

@@ -32,4 +32,18 @@ return [
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
+    '@fortawesome/fontawesome-free' => [
+        'version' => '6.7.2',
+    ],
+    '@fortawesome/fontawesome-free/css/fontawesome.min.css' => [
+        'version' => '6.7.2',
+        'type' => 'css',
+    ],
+    'boxicons' => [
+        'version' => '2.1.4',
+    ],
+    'boxicons/css/boxicons.min.css' => [
+        'version' => '2.1.4',
+        'type' => 'css',
+    ],
 ];

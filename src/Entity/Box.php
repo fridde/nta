@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Enums\UpdateType;
 use App\Repository\BoxRepository;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,8 +30,8 @@ class Box
 
     public function __construct()
     {
-        $this->Bookings = new ExtendedCollection();
-        $this->StatusUpdates = new ExtendedCollection();
+        $this->Bookings = new Coll();
+        $this->StatusUpdates = new Coll();
     }
 
     public function __toString(): string
@@ -141,7 +141,7 @@ class Box
 
     public function getLatestStatusUpdate(?UpdateType $type = null): ?BoxStatusUpdate
     {
-        return (new ExtendedCollection($this->getStatusUpdates()))->first();
+        return (new Coll($this->getStatusUpdates()))->first();
     }
 
 

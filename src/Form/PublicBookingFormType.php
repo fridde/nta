@@ -6,7 +6,7 @@ use App\Entity\Booking;
 use App\Entity\Period;
 use App\Entity\Topic;
 use App\Entity\User;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -18,7 +18,7 @@ class PublicBookingFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $periods = ExtendedCollection::create($options['periods']);
+        $periods = Coll::create($options['periods']);
         /** @var Period $closestPeriod */
         $closestPeriod = $periods->first();
         $boxesLeft = $options['boxes_left'];

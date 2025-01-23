@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BookingRepository;
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,7 +39,7 @@ class Booking
 
     public function __construct()
     {
-        $this->Boxes = new ExtendedCollection();
+        $this->Boxes = new Coll();
     }
 
     public function setId(int $id): void
@@ -120,6 +120,11 @@ class Booking
     public function setBoxes(Collection $Boxes): void
     {
         $this->Boxes = $Boxes;
+    }
+
+    public function addBox(Box $box): void
+    {
+        $this->Boxes->add($box);
     }
 
 }

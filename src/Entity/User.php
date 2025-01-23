@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Utils\ExtendedCollection;
+use App\Utils\Coll;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,9 +31,12 @@ class User
     #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: "BoxOwner")]
     protected Collection $Bookings;
 
+    #[ORM\OneToMany(targetEntity: Qualification::class, mappedBy: "User")]
+    protected Collection $Qualifications;
+
     public function __construct()
     {
-        $this->Bookings = new ExtendedCollection();
+        $this->Bookings = new Coll();
     }
 
     public function __toString(): string
@@ -72,6 +75,11 @@ class User
         $this->LastName = $LastName;
     }
 
+    public function getFullName(): string
+    {
+        return $this->FirstName . ' ' . $this->LastName;
+    }
+
     public function getMail(): ?string
     {
         return $this->Mail;
@@ -106,6 +114,31 @@ class User
     {
         $this->Bookings = $Bookings;
     }
+
+    public function getQualifications(): Collection
+    {
+        return $this->Qualifications;
+    }
+
+    public function getQualificationsAsArray(): array
+    {
+        $keys = $this->getQualifications()
+            ->map(fn(Qualification $q) => $q->getTopic()->getId())
+            ->toArray();
+        return array_combine($keys, $this->getQualifications()->toArray());
+    }
+
+    public function setQualifications(Collection $Qualifications): void
+    {
+        $this->Qualifications = $Qualifications;
+    }
+
+    public function addQualification(Qualification $Qualification): void
+    {
+        $this->Qualifications->add($Qualification);
+    }
+
+
 
 
 }
