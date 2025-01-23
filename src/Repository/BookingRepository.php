@@ -3,41 +3,34 @@
 namespace App\Repository;
 
 use App\Entity\Booking;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Period;
+use App\Entity\School;
+use App\Utils\ExtendedCollection;
+use Doctrine\ORM\EntityRepository;
 
-/**
- * @extends ServiceEntityRepository<Booking>
- */
-class BookingRepository extends ServiceEntityRepository
+
+class BookingRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    use Filterable;
+
+    public function hasPeriod(Period $period): self
     {
-        parent::__construct($registry, Booking::class);
+        $this->addAndFilter('Period', $period->getId());
     }
 
-    //    /**
-    //     * @return Booking[] Returns an array of Booking objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('b.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function getBookingsFromSchool(School $school): ExtendedCollection
+    {
+        return ExtendedCollection::create($this->findAll())
+            ->filter(fn(Booking $b) => $b->getBoxOwner()->hasSchool($school));
+    }
 
-    //    public function findOneBySomeField($value): ?Booking
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function getBookingsForPeriod(Period $period): ExtendedCollection
+    {
+        return $this->hasPeriod($period)->getMatching();
+    }
+
+    public function compileBoxOccupancyByTopicForPeriod(Period $period): array
+    {
+        // TODO: implement this
+    }
 }

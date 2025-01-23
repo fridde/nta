@@ -3,41 +3,29 @@
 namespace App\Repository;
 
 use App\Entity\Period;
+use App\Enums\Semester;
+use App\Utils\ExtendedCollection;
+use Carbon\Carbon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
 
-/**
- * @extends ServiceEntityRepository<Period>
- */
-class PeriodRepository extends ServiceEntityRepository
+class PeriodRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function getFuturePeriods(): ExtendedCollection
     {
-        parent::__construct($registry, Period::class);
+        $currentPeriod = $this->getCurrentPeriod();
+
+        return ExtendedCollection::create($this->findAll())
+            ->filter(fn(Period $p) => $p->compare($currentPeriod) > 0);
     }
 
-//    /**
-//     * @return Period[] Returns an array of Period objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getCurrentPeriod(): Period
+    {
+        $now = Carbon::now();
+        $id = $now->year . '.' . Semester::getSemesterForDate($now)->value;
 
-//    public function findOneBySomeField($value): ?Period
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $this->find($id);
+    }
+
+
 }

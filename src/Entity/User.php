@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Utils\ExtendedCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,10 +25,21 @@ class User
     #[ORM\Column(unique: true)]
     protected string $Mail;
 
-    #[ORM\ManyToOne(targetEntity: School::class)]
+    #[ORM\ManyToOne(targetEntity: School::class, inversedBy: "Users")]
     protected School $School;
 
+    #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: "BoxOwner")]
     protected Collection $Bookings;
+
+    public function __construct()
+    {
+        $this->Bookings = new ExtendedCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->FirstName . ' ' . $this->LastName . ' [' .  strtoupper($this->School->getId()) . ']';
+    }
 
     public function getId(): int
     {
@@ -70,6 +82,11 @@ class User
         $this->Mail = mb_strtolower(trim($Mail));
     }
 
+    public function hasSchool(School $school): bool
+    {
+        return $this->getSchool()->equals($school);
+    }
+
     public function getSchool(): School
     {
         return $this->School;
@@ -78,6 +95,16 @@ class User
     public function setSchool(School $School): void
     {
         $this->School = $School;
+    }
+
+    public function getBookings(): Collection
+    {
+        return $this->Bookings;
+    }
+
+    public function setBookings(Collection $Bookings): void
+    {
+        $this->Bookings = $Bookings;
     }
 
 

@@ -2,10 +2,14 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Booking;
 use App\Entity\Box;
+use App\Entity\Item;
+use App\Entity\Qualification;
 use App\Entity\School;
 use App\Entity\Topic;
 use App\Entity\User;
+use App\Utils\RepoContainer;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -17,22 +21,16 @@ class DashboardController extends AbstractDashboardController
 {
     private const array MENU = [
         'tables' => [
+            ['Bokningar', 'book', Booking::class],
             ['Användare', 'users', User::class],
             ['Lådor', 'boxes', Box::class],
             ['Teman', 'question', Topic::class],
             ['Skolor', 'school', School::class],
+            ['Kompetens', 'award', Qualification::class],
+            ['Föremål', 'flask', Item::class]
         ],
         'routes' => [
-//            ['Arbetsfördelning', 'user-clock', 'tools_schedule_colleagues'],
-//            ['Bekräfta buss', 'tasks', 'tools_confirm_bus_orders'],
-//            ['Fördela besöksdatum', 'network-wired', 'tools_distribute_visits'],
-//            ['Satsvis redigering', 'layer-group', 'tools_batch_edit'],
-//            ['Lägg till grupper', 'plus-square', 'tools_add_groups'],
-//            ['Planera nästa termin', 'calendar-week', 'tools_plan_year'],
-//            ['Bussbeställning', 'bus', 'tools_order_bus'],
-//            ['Matbeställning', 'utensils', 'tools_order_food'],
 //            ['Mejlutskick', 'envelope', 'tools_send_mail'],
-//            ['Bussinställningar', 'bus-alt', 'tools_set_bus_settings'],
 //            ['Skolor besöksordning', 'sort-numeric-down', 'tools_order_schools'],
 //            ['Skapa API-keys', 'key', 'tools_create_api_keys'],
 //            ['Kolla upp användare', 'magnifying-glass' ,'tools_lookup_profile', ['mail' => '1']],
@@ -40,6 +38,13 @@ class DashboardController extends AbstractDashboardController
 //            ['Logg', 'th-list', 'tools_show_log'],
         ]
     ];
+
+    public function __construct
+    (
+        protected RepoContainer $rc
+    )
+    {
+    }
 
 
     #[Route('/admin/', name: 'admin')]

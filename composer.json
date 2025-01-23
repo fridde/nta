@@ -10,8 +10,9 @@
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.2",
-        "easycorp/easyadmin-bundle": "^4.12",
+        "easycorp/easyadmin-bundle": "4.20.3",
         "nesbot/carbon": "^3.8",
+        "royopa/fpdf-symfony2": "^4.0",
         "symfony/apache-pack": "^1.0",
         "symfony/asset-mapper": "7.1.*",
         "symfony/console": "7.1.*",
@@ -22,9 +23,11 @@
         "symfony/monolog-bundle": "^3.10",
         "symfony/routing": "7.1.*",
         "symfony/runtime": "7.1.*",
+        "symfony/stimulus-bundle": "^2.22",
+        "symfony/twig-bridge": "7.1.*",
         "symfony/yaml": "7.1.*",
-        "thenetworg/oauth2-azure": "^2.2"
-
+        "thenetworg/oauth2-azure": "^2.2",
+        "twig/twig": "^3.17"
     },
     "config": {
         "allow-plugins": {

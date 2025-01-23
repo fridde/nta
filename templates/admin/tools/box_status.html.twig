@@ -1,0 +1,13 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block admin_page_content %}
+
+    <table>
+    {% for box in boxes %}
+        <tr>
+            <td>{{ box.id }}</td>
+            <td>{{ box.status }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

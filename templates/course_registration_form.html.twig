@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <span id="qualifications" class="visually-hidden" data-qualifications="{{ qualifications|json_encode }}"></span>
+    <div
+            {{ stimulus_controller('courseregistrationform') }}
+            data-courseregistrationform-qualifications-value="{{ qualifications|json_encode }}"
+    >
+        {{ form(form) }}
+    </div>
+{% endblock %}

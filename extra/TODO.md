@@ -1,0 +1,24 @@
+- [x] show box status (change date)
+- [ ] batch-update box status
+- [ ] create box inventory
+- [ ] reorder box inventory
+- [ ] create pick up/drop list
+- [ ] look up item
+- [ ] create shelf inventory
+- [x] create billing
+- [x] create address label
+- [ ] create shipment list (körorder)
+- [ ] edit item placement
+- [ ] create order list
+- [ ] create storage inventory
+- [ ] create course registration list
+- [ ] use course registrations to approve qualifications
+- [ ] authenticate and authorize users 
+- [ ] create overview page for each school
+  - teachers + qualifications
+  - bookings: current and future
+    - teacher has qualification? yes, soon, no
+- [ ] create box-booking form
+- [ ] create course-registration form
+- [ ] create box label
+- [ ] 

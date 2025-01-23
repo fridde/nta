@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BoxRepository;
 use App\Repository\SchoolRepository;
+use App\Utils\ExtendedCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,13 +21,13 @@ class School
     #[ORM\Column]
     protected int $RouteOrder;
 
-//    #[ORM\OneToMany(targetEntity: User::class, mappedBy: "School")]
-//    #[ORM\OrderBy(["FirstName" => "ASC"])]
-//    protected Collection $Users;
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: "School")]
+    #[ORM\OrderBy(["FirstName" => "ASC"])]
+    protected Collection $Users;
 
     public function __construct()
     {
-//        $this->Users = new ArrayCollection();
+        $this->Users = new ExtendedCollection();
     }
 
     public function __toString(): string
@@ -63,5 +64,22 @@ class School
     {
         $this->RouteOrder = $RouteOrder;
     }
+
+    public function getUsers(): Collection
+    {
+        return $this->Users;
+    }
+
+    public function setUsers(Collection $Users): void
+    {
+        $this->Users = $Users;
+    }
+
+    public function equals(School $school): bool
+    {
+        return $this->id === $school->getId();
+    }
+
+
 
 }

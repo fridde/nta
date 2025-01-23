@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use App\Repository\TopicRepository;
+use App\Utils\ExtendedCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity, ORM\Table(name: "topics")]
+#[ORM\Entity(repositoryClass: TopicRepository::class), ORM\Table(name: "topics")]
 class Topic 
 {
     #[ORM\Id, ORM\Column(length: 5, unique: true)]
@@ -12,6 +15,21 @@ class Topic
 
     #[ORM\Column]
     protected string $Name;
+    
+    #[ORM\Column]
+    protected bool $NeedsBoxes = true;
+
+    #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: "Topic")]
+    private Collection $Bookings;
+
+    #[ORM\OneToMany(targetEntity: Box::class, mappedBy: "Topic")]
+    private Collection $Boxes;
+
+    public function __construct()
+    {
+        $this->Bookings = new ExtendedCollection();
+        $this->Boxes = new ExtendedCollection();
+    }
 
     public function __toString(): string
     {
@@ -38,4 +56,38 @@ class Topic
         $this->Name = $Name;
     }
 
+    public function getBookings(): Collection
+    {
+        return $this->Bookings;
+    }
+
+    public function setBookings(Collection $Bookings): void
+    {
+        $this->Bookings = $Bookings;
+    }
+
+    public function getBoxes(): Collection
+    {
+        return $this->Boxes;
+    }
+
+    public function setBoxes(Collection $Boxes): void
+    {
+        $this->Boxes = $Boxes;
+    }
+
+    public function needsBoxes(): bool
+    {
+        return $this->NeedsBoxes;
+    }
+
+    public function setNeedsBoxes(bool $NeedsBoxes): void
+    {
+        $this->NeedsBoxes = $NeedsBoxes;
+    }
+
+
+
+    
+    
 }
