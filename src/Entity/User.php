@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: UserRepository::class), ORM\Table(name: "users")]
-class User
+class User implements UserInterface
 {
 
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
@@ -138,7 +138,19 @@ class User
         $this->Qualifications->add($Qualification);
     }
 
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
 
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getMail();
+    }
 
 
 }

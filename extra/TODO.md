@@ -19,7 +19,10 @@
 - [ ] create course registration list
 - [ ] use course registrations to approve qualifications
 - [ ] authenticate and authorize users 
-- [ ] create box-booking form
-- [ ] create course-registration form
+- [x] create box-booking form
+- [x] create course-registration form
+
+
+# One day / maybe
 - [ ] create box label
 - [ ] 

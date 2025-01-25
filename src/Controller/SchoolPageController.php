@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Box;
-use App\Entity\CourseRegistration;
 use App\Entity\School;
-use App\Entity\User;
 use App\Repository\BookingRepository;
 use App\Repository\CourseRegistrationRepository;
 use App\Utils\RepoContainer;
