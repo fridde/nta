@@ -16,6 +16,7 @@ use App\Entity\Topic;
 use App\Entity\User;
 
 use App\Enums\InventoryType;
+use App\Enums\Role;
 use App\Enums\UpdateType;
 use App\Repository\BookingRepository;
 use App\Repository\BoxRepository;
@@ -128,7 +129,15 @@ class AppFixtures extends Fixture
 
     private function createUser(array $row): User
     {
-        return new User();
+        $u = new User();
+
+        $roles = $row['Roles'];
+        $roles = empty($roles) ? [] : explode(',', $roles);
+        foreach ($roles as $role) {
+            $u->addRole(Role::from($role));
+        }
+
+        return $u;
     }
 
     private function createBox(array $row): Box

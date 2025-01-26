@@ -39,4 +39,7 @@ return [
         'version' => '2.1.4',
         'type' => 'css',
     ],
+    '@stimulus-components/dialog' => [
+        'version' => '1.0.1',
+    ],
 ];

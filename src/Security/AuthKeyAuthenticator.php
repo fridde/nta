@@ -47,7 +47,7 @@ class AuthKeyAuthenticator extends AbstractAuthenticator implements Authenticati
             return false;
         }
 
-        return !empty($this->key);
+        return $this->key->isPopulated();
     }
 
     public function authenticate(Request $request): Passport

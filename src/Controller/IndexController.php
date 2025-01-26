@@ -18,4 +18,11 @@ class IndexController extends AbstractController
         return new Response('<html><body>Lucky number: '.$number.'</body></html>');
     }
 
+    #[Route('/logout', name:'app_logout', methods: ['GET'])]
+    public function logout(): void
+    {
+        // Nothing in this method will be executed, it's just there to satisfy the router
+        // ALl logic is executed in LogoutSubscriber
+    }
+
 }

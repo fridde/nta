@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\School;
+use App\Enums\Role;
 use App\Repository\BookingRepository;
 use App\Repository\CourseRegistrationRepository;
+use App\Security\Voter\SameSchoolVoter;
 use App\Utils\RepoContainer;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class SchoolPageController extends AbstractController
 {
@@ -19,7 +22,8 @@ class SchoolPageController extends AbstractController
     {
     }
 
-    #[Route('/skola/{school}', name: 'school_page')]
+    #[Route('/skola/{school}', name: 'school_page', methods: ['GET'])]
+    #[IsGranted(Role::ACTIVE_USER->value), IsGranted(SameSchoolVoter::NAME, 'school')]
     #[Template('school_page.html.twig')]
     public function showSchoolPage(School $school): array
     {

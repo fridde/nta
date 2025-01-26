@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use App\Enums\Role;
 use App\Utils\Coll;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -24,6 +26,9 @@ class User implements UserInterface
 
     #[ORM\Column(unique: true)]
     protected string $Mail;
+    
+    #[ORM\Column(type: Types::JSON)]
+    protected array $Roles = [];
 
     #[ORM\ManyToOne(targetEntity: School::class, inversedBy: "Users")]
     protected School $School;
@@ -140,7 +145,26 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        $roles = Coll::create($this->Roles);
+        $roles->add(Role::USER->value);
+
+        return $roles->unique()->toArray();
+    }
+
+    public function addRole(Role $role): void
+    {
+        $roles = Coll::create($this->Roles);
+        $roles->add($role->value);
+
+        $this->setRoles($roles->unique()->toArray());
+    }
+
+    public function setRoles(array $rolesAsStrings): void
+    {
+        $roles = Coll::create($rolesAsStrings);
+        $roles->removeElement(Role::USER->value);
+
+        $this->Roles = $roles->toArray();
     }
 
     public function eraseCredentials(): void

@@ -34,6 +34,11 @@ readonly class RepoContainer
     {
     }
 
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->em;
+    }
+
     public function getBookingRepo(): BookingRepository
     {
         return $this->em->getRepository(Booking::class);

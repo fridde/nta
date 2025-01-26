@@ -4,6 +4,7 @@ namespace App\Security\Voter;
 
 use App\Entity\Booking;
 use App\Entity\CourseRegistration;
+use App\Entity\School;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -39,11 +40,15 @@ class SameSchoolVoter extends Voter
         return $this->hasRightSchool($user, $subject);
     }
 
-    private function hasRightSchool(User $user, User|Booking|CourseRegistration $subject): bool
+    private function hasRightSchool(
+        User $user,
+        School|User|Booking|CourseRegistration $subject
+    ): bool
     {
         $userSchool = $user->getSchool();
 
         return match(true){
+            $subject instanceof School => $subject->equals($userSchool),
             $subject instanceof Booking => $subject->getBoxOwner()->hasSchool($userSchool),
             $subject instanceof User => $subject->hasSchool($userSchool),
             $subject instanceof CourseRegistration => $subject->getUser()->hasSchool($userSchool),

@@ -35,4 +35,9 @@ class Key
 
         return $this;
     }
+
+    public function isPopulated(): bool
+    {
+        return $this->id !== null;
+    }
 }
