@@ -1,5 +1,5 @@
 
-- [ ] create overview page for each school
+- [x] create overview page for each school
   - teachers + qualifications
   - bookings: current and future
     - teacher has qualification? yes, soon, no
@@ -18,7 +18,7 @@
 - [ ] create storage inventory
 - [ ] create course registration list
 - [ ] use course registrations to approve qualifications
-- [ ] authenticate and authorize users 
+- [x] authenticate and authorize users 
 - [x] create box-booking form
 - [x] create course-registration form
 

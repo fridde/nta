@@ -9,7 +9,7 @@ use App\Entity\Box;
 use App\Entity\Period;
 use App\Entity\Topic;
 use App\Entity\User;
-use App\Form\PublicBookingFormType;
+use App\Form\BoxBookingFormType;
 use App\Utils\Coll;
 use App\Utils\RepoContainer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,7 +46,7 @@ class BookingFormController extends AbstractController
         $booking = new Booking();
         $booking->setPeriod($this->rc->getPeriodRepo()->getCurrentPeriod());
 
-        $form = $this->createForm(PublicBookingFormType::class, $booking, [
+        $form = $this->createForm(BoxBookingFormType::class, $booking, [
             'users' => $users,
             'periods' => $futurePeriods->toArray(),
             'boxes_left' => $nrBoxesLeft,
@@ -58,7 +58,7 @@ class BookingFormController extends AbstractController
             $thisBooking = $form->getData();
             $nrBoxes = $nrBoxesLeft[$thisBooking->getPeriod()->getId()][$thisBooking->getTopic()->getId()];
             if($thisBooking->getNrBoxes() > $nrBoxes){
-                throw new \Exception('Det finns inte så många lådor!');
+                throw new \Exception('Det finns inte så många lådor som du vill ha!');
             }
             $boxesForTopic = $boxesLeft[$thisBooking->getPeriod()->getId()][$thisBooking->getTopic()->getId()];
             foreach(range(1, $thisBooking->getNrBoxes()) as $boxCount){

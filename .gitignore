@@ -1,7 +1,7 @@
 /deployment.php
 /deployment.log
 
-/.idea
+/.idea*
 
 
 ###> symfony/framework-bundle ###

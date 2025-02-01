@@ -38,9 +38,10 @@ class UserApiController extends AbstractController
         '/api/user/{user}',
         methods: ['POST']
     )]
-    #[IsGranted(SameSchoolVoter::NAME)]
+    #[IsGranted(SameSchoolVoter::class)]
     public function updateUser(User $user): JsonResponse
     {
+
         $this->updateEntityData($user);
 
         return $this->asJson(['success' => true]);
@@ -56,7 +57,8 @@ class UserApiController extends AbstractController
         /** @var User $requestingUser  */
         $requestingUser = $this->security->getUser();
 
-        $data = $this->request->get('user');
+        $data = $this->request->getPayload()->all('user_data');
+
         $tempId = $data['id'];
         unset($data['id']);
         $user = new User();
@@ -73,19 +75,22 @@ class UserApiController extends AbstractController
         } catch(UniqueConstraintViolationException $ue){
             $msg = 'En användare med mejladress "%s" finns redan i databasen och tillhör %s. ';
             $msg .= 'Kontakta oss ifall detta bör ändras!';
-            throw new \DomainException(sprintf($msg, $user->getMail(), $user->getSchool()->getName()));
+
+            return $this->asJson([
+                'error' => sprintf($msg, $user->getMail(), $user->getSchool()->getName())
+            ], Response::HTTP_BAD_REQUEST);
         }
 
-        if($isAdmin){
-            return new Response('<h1>Användare har lagts till</h1>');
-        }
+//        if($isAdmin){
+//            return new Response('<h1>Användare har lagts till</h1>');
+//        }
 
         return $this->asJson(['temp_id' => $tempId, 'user_id' => $user->getId()]);
     }
 
-    private function asJson($data): JsonResponse
+    private function asJson($data, int $status = Response::HTTP_OK): JsonResponse
     {
-        return new JsonResponse((array) $data);
+        return new JsonResponse((array) $data, $status);
     }
 
     public function updateSingleEntity($e, array $data = []): void
@@ -100,7 +105,8 @@ class UserApiController extends AbstractController
 
     private function updateEntityData($e, ?array $data = null): void
     {
-        $data ??= $this->request->get('updates', []);
+        $x = $this->request->getPayload();
+        $data ??= $this->request->getPayload()->all('user_data');
         $this->updateSingleEntity($e, $data);
         $this->em->flush();
     }

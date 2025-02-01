@@ -12,8 +12,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class SameSchoolVoter extends Voter
 {
-    public const string NAME = 'SameSchool';
-
     public function __construct(
         private readonly Security $security
     )
@@ -22,7 +20,7 @@ class SameSchoolVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return $attribute === self::NAME;
+        return $attribute === self::class;
     }
 
 

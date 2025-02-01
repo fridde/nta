@@ -34,8 +34,7 @@ class CourseRegistrationFormController extends AbstractController
     public function registerForCourse(Request $request): array|RedirectResponse
     {
         /** @var User $user */
-//        $user = $this->getUser();
-        $user = $this->rc->getUserRepo()->find(3); // debugging: lars wikström, GALA
+        $user = $this->getUser();
         $school = $user->getSchool();
         $users = $this->rc->getUserRepo()->hasSchool($school)->getMatching();
 
@@ -47,6 +46,8 @@ class CourseRegistrationFormController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($form->getData());
             $this->em->flush();
+            $this->addFlash('success', 'Användaren har registrerats!');
+
             return $this->redirectToRoute('school_page', ['school' => $school]);
         }
 

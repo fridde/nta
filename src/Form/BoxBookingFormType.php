@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PublicBookingFormType extends AbstractType
+class BoxBookingFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -25,25 +25,33 @@ class PublicBookingFormType extends AbstractType
         
         $builder
             ->add('Period', EntityType::class, [
+                'label' => 'Termin',
                 'class' => Period::class,
                 'choices' => $options['periods'],
                 'attr' => ['data-action' => 'bookingform#updateTopicsAvailable']
             ])
             ->add('Topic', EntityType::class, [
+                'label' => 'Tema',
                 'class' => Topic::class,
                 'choice_label' => 'Name',
                 'placeholder' => '---Välj tema---',
                 'choice_attr' => fn(Topic $t) => $boxesLeft[$closestPeriod->getId()][$t->getId()] === 0 ? ['disabled' => 'disabled'] : [],
-                'attr' => ['data-bookingform-target' => 'topicSelector' ]
+                'attr' => ['data-bookingform-target' => 'topicSelector' ],
+                'help' => 'Om ett tema inte går att välja beror det på att det inte finns tillräckligt med lådor kvar.'
             ])
             ->add('BoxOwner', EntityType::class, [
+                'label' => 'Pedagog som ska ha lådan',
                 'placeholder' => '---Välj lärare---',
                 'class' => User::class,
                 'choices' => $options['users'],
             ])
-            ->add('NrStudents', IntegerType::class, ['data' => 30])
-            ->add('NrBoxes')
-            ->add('Send', SubmitType::class);
+            ->add('NrStudents', IntegerType::class, [
+                'label' => 'Antal elever som ska nyttja lådan/lådorna',
+                'help' => 'För hur många elever ska materialet i dessa lådor (eller denna låda) räcka?',
+                'data' => 30,
+            ])
+            ->add('NrBoxes', null, ['label' => 'Antal lådor'])
+            ->add('Send', SubmitType::class, ['label' => 'Boka']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

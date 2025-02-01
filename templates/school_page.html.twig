@@ -4,39 +4,59 @@
 
     {% macro staff_row(user_id, user_data, hidden = false) %}
         <tr data-id="{{ user_id }}"{% if hidden %} class="d-none"{% endif %}>
-
             <td data-field="FirstName">{{- user_data[0] -}}</td>
             <td data-field="LastName">{{- user_data[1] -}}</td>
             <td data-field="Mail">{{ user_data[2] }}</td>
             <td>
                 {% for topic_id, q in user_data[3] %}
-                    <span class="badge bg-success" title="{{ q.Topic.Name }}">{{ topic_id|upper }}
-                        {#                        <span class="tooltiptext"> #}
-                        {#                            {{ q.Topic.Name }} #}
-                        {#                        </span> #}
-                    </span>
+                    <span class="badge bg-success" title="{{ q.Topic.Name }}">{{ topic_id|upper }}</span>
                 {% endfor %}
             </td>
             <td>
-                <button class="btn btn-outline-primary edit-staff-row-btn" type="button">
-                    <i class='bx bxs-user-detail'></i>
+                <button
+                        class="btn btn-outline-primary edit-staff-row-btn"
+                        type="button"
+                        {{ stimulus_action('userdialog', 'editUser') }}
+                >
+                    {{ ux_icon('mingcute:user-edit-fill', {width: '20px', height: '20px'}) }}
                 </button>
             </td>
         </tr>
     {% endmacro %}
 
-    <div {{ stimulus_controller('adduserdialog') }}>
-        <dialog data-adduserdialog-target="dialog">
-            <h1>This is the dialog!</h1>
-            <button type="button" data-action="dialog#close">Cancel</button>
+    <div {{ stimulus_controller('userdialog', {'userId': 'new', 'requestSchool': school.id}) }}>
+        <dialog {{ stimulus_target('userdialog', 'dialog') }}>
+            <div class="form-floating">
+                <input id="first-name-id" class="form-control" type="text" name="FirstName"
+                       placeholder="Förnamn" {{ stimulus_target('userdialog', 'input') }}>
+                <label for="first-name-id" class="form-label">Förnamn</label>
+            </div>
+            <div class="form-floating">
+                <input id="last-name-id" class="form-control" type="text" name="LastName"
+                       placeholder="Efternamn" {{ stimulus_target('userdialog', 'input') }}>
+                <label for="last-name-id" class="form-label">Efternamn</label>
+            </div>
+            <div class="form-floating">
+                <input id="email-id" class="form-control" type="email" name="Mail" placeholder="Mejl"
+                       required {{ stimulus_target('userdialog', 'input') }}
+                        {{ stimulus_action('userdialog', 'checkMailField', 'input') }}
+                >
+                <label for="email-id" class="form-label">Mejl</label>
+            </div>
+            <button type="button" {{ stimulus_action('userdialog', 'close') }}>Cancel</button>
+            <button type="button" {{ stimulus_action('userdialog', 'save') }} {{ stimulus_target('userdialog', 'saveButton') }}>Spara</button>
         </dialog>
 
         <span id="staff-table-anchor" class="anchor"></span>
         <h1>Pedagoger</h1>
         <div class="position-relative">
             <div class="position-absolute top-0 start-0">
-                <button class="btn btn-primary" id="add-staff-member-btn" data-action="dialog#open">
-                    <i class='bx bx-user-plus'></i>
+                <button
+                        class="btn btn-primary"
+                        id="add-staff-member-btn"
+                        {{ stimulus_action('userdialog', 'openNewUserDialog') }}
+                >
+                    {{ ux_icon('mingcute:user-add-fill', {height: '20px'}) }}
                     Lägg till pedagog
                 </button>
             </div>

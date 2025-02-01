@@ -4,7 +4,9 @@ namespace App\Controller\Admin\Tool;
 
 use App\Controller\Admin\DashboardController;
 use App\Entity\Box;
+use App\Enums\UpdateType;
 use App\Kernel;
+use App\Utils\Coll;
 use App\Utils\PDF;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader\PageBoundaries;
@@ -25,26 +27,19 @@ class ToolController extends DashboardController
     #[Template('admin/tools/box_status.html.twig')]
     public function showBoxStatus(): array
     {
-        $boxes = $this->rc->getBoxRepo()->findAll();
+        $boxes = Coll::create($this->rc->getBoxRepo()->findAll());
 
-        $return = [];
-        foreach ($boxes as $box) {
-            /* @var Box $box*/
-            $status = $box->getLatestStatusUpdate();
-            $return[] = [
-                'id' => $box->getFormattedId(),
-                'status' => $status?->getType()->value
-            ];
-        }
-
-        return ['boxes' => $return];
+        return ['boxes' => $boxes->map(fn(Box $b) => [
+            'id' => $b->getFormattedId(),
+            'status' => $b->getLatestStatusUpdate()?->getType()->value
+        ])];
     }
 
     #[Route('/admin/update-box-status')]
     #[Template('admin/tools/update_box_status.html.twig')]
-    public function batchUpdateBoxStatus(): void
+    public function batchUpdateBoxStatus(): array
     {
-
+        return ['update_types' => UpdateType::cases()];
     }
 
     #[Route('/admin/create-invoice')]

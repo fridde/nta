@@ -1,14 +1,11 @@
 import './bootstrap.js';
-import 'bootstrap';
-
-import 'boxicons';
-
-import 'boxicons/css/boxicons.min.css';
+import 'bootstrap';  // this is the bootstrap-framework by formerly twitter
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 
-// $(function () {
-//     $('[data-toggle="tooltip"]').tooltip()
-// })
+import "./utils/Req.js";
+
+
+
 

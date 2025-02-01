@@ -17,12 +17,15 @@ class CourseRegistrationFormType extends AbstractType
     {
         $builder
             ->add('User', EntityType::class, [
+                'label' => 'Pedagog',
                 'class' => User::class,
                 'choices' => $options['users'],
+                'choice_label' => 'FullName',
                 'placeholder' => '---Välj lärare---',
                 'attr' => ['data-action' => 'courseregistrationform#updateTopicsAvailable'],
             ])
             ->add('Topic', EntityType::class, [
+                'label' => 'Tema',
                 'class' => Topic::class,
                 'choice_label' => 'Name',
                 'placeholder' => '---Välj tema---',

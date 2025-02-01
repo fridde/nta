@@ -67,7 +67,7 @@ class Box
     public function determineBoxParts(): void
     {
         if($this->BoxParts === null) {
-            $this->BoxParts = array_filter(self::extractBoxParts($this->id), fn($p) => $p !== null);
+            $this->BoxParts = array_filter(self::extractBoxParts($this->id), fn($p) => $p !== "");
         }
     }
 
@@ -79,7 +79,7 @@ class Box
 
         return [
             'number' => $matches[2][0],
-            'letter' => $matches[3][0] ?? null,
+            'letter' => $matches[3][0] ?? "",
         ];
     }
 

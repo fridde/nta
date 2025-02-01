@@ -1,0 +1,19 @@
+{% set variables = [
+    ["success", "success", "true", "data-bs-delay=5000", "Uppdatering", "Uppgifterna uppdaterades."],
+    ["error", "danger", "false", "", "Fel", "Något gick fel."]
+] %}
+
+{% for v in variables %}
+    <div class="toast-container position-fixed top-0 end-0 p-3 mt-5" style="margin-top: 50px; z-index: 11">
+        <div id="update-toast-{{ v[0] }}" class="toast text-bg-{{ v[1] }}" data-bs-autohide="{{ v[2] }}" {{ v[3] }}
+             role="alert">
+            <div class="toast-header">
+                <strong class="me-auto">{{ v[4] }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                {{ v[5] }}
+            </div>
+        </div>
+    </div>
+{% endfor %}

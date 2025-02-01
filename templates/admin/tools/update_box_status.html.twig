@@ -2,6 +2,21 @@
 
 {% block admin_page_content %}
 
-    <label for="box-updates">Låduppdateringar</label>
-    <textarea name="box-updates" id="box-updates" cols="10" rows="50"></textarea>
+    <div {{ stimulus_controller('batchboxupdate') }}>
+        <div>
+            <button type="submit" {{ stimulus_action('batchboxupdate', 'update') }}>Spara</button>
+        </div>
+        <div>
+            <label class="form-label" for="batchupdatetype">Välj typ av uppdatering</label>
+            <select name="batchupdatetype" class="form-control" {{ stimulus_target('batchboxupdate', 'updateType') }}>
+                {% for type in update_types %}
+                    <option value="{{ type.value }}">{{ type.value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label class="form-label" for="box-updates">Låduppdateringar</label>
+            <textarea class="form-control" name="box-updates" cols="10" rows="50" {{ stimulus_target('batchboxupdate', 'boxes') }}></textarea>
+        </div>
+    </div>
 {% endblock %}

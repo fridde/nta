@@ -26,6 +26,7 @@
         "symfony/runtime": "7.1.*",
         "symfony/stimulus-bundle": "^2.22",
         "symfony/twig-bridge": "7.1.*",
+        "symfony/ux-icons": "^2.22",
         "symfony/yaml": "7.1.*",
         "thenetworg/oauth2-azure": "*",
         "twig/twig": "^3.17"

@@ -23,7 +23,7 @@ class SchoolPageController extends AbstractController
     }
 
     #[Route('/skola/{school}', name: 'school_page', methods: ['GET'])]
-    #[IsGranted(Role::ACTIVE_USER->value), IsGranted(SameSchoolVoter::NAME, 'school')]
+    #[IsGranted(Role::ACTIVE_USER->value), IsGranted(SameSchoolVoter::class, 'school')]
     #[Template('school_page.html.twig')]
     public function showSchoolPage(School $school): array
     {
@@ -39,6 +39,7 @@ class SchoolPageController extends AbstractController
         $bookings = BookingRepository::splitByPeriod($bookings);
 
         return [
+            'school' => $school,
             'users' => $users,
             'bookings' => $bookings,
             'qualifications' => $qualifications,

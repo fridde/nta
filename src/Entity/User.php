@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Enums\Role;
+use App\Utils\Attributes\ConvertToEntityFirst;
 use App\Utils\Coll;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -105,6 +106,7 @@ class User implements UserInterface
         return $this->School;
     }
 
+    #[ConvertToEntityFirst]
     public function setSchool(School $School): void
     {
         $this->School = $School;
