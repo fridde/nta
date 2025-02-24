@@ -30,6 +30,13 @@ class Inventory
     #[ORM\Column]
     private int $ListRank = 0;
 
+    public function __construct(null|InventoryType $inventoryType = null)
+    {
+        if($inventoryType instanceof InventoryType) {
+            $this->InventoryType = $inventoryType;
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;

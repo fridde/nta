@@ -35,4 +35,65 @@ return [
     '@stimulus-components/dialog' => [
         'version' => '1.0.1',
     ],
+    'Toasthandler' => [
+        'path' => './assets/utils/Toasthandler.js',
+    ],
+    'Req' => [
+        'path' => './assets/utils/Req.js',
+    ],
+    'image_recognition' => [
+        'path' => './assets/image_recognition.js',
+        'entrypoint' => true,
+    ],
+    'moment' => [
+        'version' => '2.30.1',
+    ],
+    'jszip' => [
+        'version' => '3.10.1',
+    ],
+    'file-saver' => [
+        'version' => '2.0.5',
+    ],
+    'long' => [
+        'version' => '4.0.0',
+    ],
+    'seedrandom' => [
+        'version' => '3.0.5',
+    ],
+    '@tensorflow/tfjs' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-core' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-core/dist/register_all_gradients' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-core/dist/public/chained_ops/register_all_chained_ops' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-layers' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-converter' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-data' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-backend-cpu' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-backend-webgl' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-core/dist/ops/ops_for_converter' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-backend-cpu/dist/shared' => [
+        'version' => '4.22.0',
+    ],
+    '@tensorflow/tfjs-core/dist/io/io_utils' => [
+        'version' => '4.22.0',
+    ],
 ];

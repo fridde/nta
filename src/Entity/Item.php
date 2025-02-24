@@ -57,9 +57,9 @@ class Item
     public function createId(): string
     {
         $id = '';
-        $max = strlen(self::ID_SYMBOLS);
+        $max = strlen(self::ID_SYMBOLS) - 1;
 
-        foreach ([0, 1, 2] as $i) {
+        for ($i = 0; $i < 3; $i++) {
             $id .= self::ID_SYMBOLS[random_int(0, $max)];
         }
 

@@ -1,0 +1,15 @@
+{{ importmap('image_recognition') }}
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+
+
+<div>
+    Rename images
+    <input type="file" id="rename-images" multiple>
+</div>
+<div>
+    Images for new model
+    <input type="file" id="recalculate-model" multiple>
+</div>
+<div>
+    <img src="#" alt="Preview Uploaded Image" id="photo-preview" decoding="sync">
+</div>

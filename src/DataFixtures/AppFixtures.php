@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\DataFixtures;
 
@@ -30,15 +30,17 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
+use Symfony\Component\Console\Output\OutputInterface;
 
 
-class AppFixtures extends Fixture 
+class AppFixtures extends Fixture
 {
 
     private ObjectManager $om;
 
     public function __construct(
-        //private LoggerInterface $logger,
+        private LoggerInterface           $logger,
+        private readonly MaterialImporter $materialImporter
     )
     {
     }
@@ -74,6 +76,8 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+
+
         $this->om = $manager;
 
         $reader = IOFactory::createReader('Ods');
@@ -123,6 +127,7 @@ class AppFixtures extends Fixture
             $this->om->flush();
         }
 
+        $this->materialImporter->run();
     }
 
     // ##############################################################################
@@ -171,7 +176,7 @@ class AppFixtures extends Fixture
         $userRepo = $this->om->getRepository(User::class);
 
         $b->setBoxOwner($userRepo->find($row['BoxOwner']));
-        if($row['Booker']){
+        if ($row['Booker']) {
             $b->setBooker($userRepo->find($row['Booker']));
         }
 
@@ -232,7 +237,7 @@ class AppFixtures extends Fixture
                 $bookingRepo = $this->om->getRepository(Booking::class);
                 $box = $boxRepo->find($row['Box']);
                 $booking = $bookingRepo->find($row['Booking']);
-                if($booking !== null){
+                if ($booking !== null) {
                     $box->addBooking($booking);
                 }
 

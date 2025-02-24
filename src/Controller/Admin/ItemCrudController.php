@@ -24,9 +24,9 @@ class ItemCrudController extends AbstractCrudController
             TextField::new('Placement'),
             TextField::new('DetailedLabel'),
             TextField::new('SimpleLabel'),
-            ArrayField::new('StaffInfo'),
+//            ArrayField::new('StaffInfo'),
             TextField::new('UserInfo'),
-            ArrayField::new('OrderInfo'),
+//            ArrayField::new('OrderInfo'),
         ];
     }
 

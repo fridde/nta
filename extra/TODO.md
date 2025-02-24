@@ -4,7 +4,7 @@
   - bookings: current and future
     - teacher has qualification? yes, soon, no
 - [x] show box status (change date)
-- [ ] batch-update box status
+- [x] batch-update box status
 - [ ] create box inventory
 - [ ] reorder box inventory
 - [ ] create pick up/drop list

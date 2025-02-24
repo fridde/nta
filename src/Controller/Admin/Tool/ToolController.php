@@ -29,10 +29,11 @@ class ToolController extends DashboardController
     {
         $boxes = Coll::create($this->rc->getBoxRepo()->findAll());
 
-        return ['boxes' => $boxes->map(fn(Box $b) => [
-            'id' => $b->getFormattedId(),
-            'status' => $b->getLatestStatusUpdate()?->getType()->value
-        ])];
+        return [
+            'boxes' => $boxes->map(fn(Box $b) => [
+                'id' => $b->getFormattedId(),
+                'status' => $b->getLatestStatusUpdate()?->getType()->value
+            ])];
     }
 
     #[Route('/admin/update-box-status')]

@@ -1,8 +1,7 @@
 import {Controller} from '@hotwired/stimulus';
 import Dialog from '@stimulus-components/dialog'
-import Req from "../utils/Req.js";
-import Toasthandler from "../utils/Toasthandler.js";
-//import Req from './../utils/Req.js';
+import Req from "Req";
+import Toasthandler from "Toasthandler";
 
 const d = document;
 

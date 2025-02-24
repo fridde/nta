@@ -1,6 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
-import Req from "../utils/Req.js";
-import Toasthandler from "../utils/Toasthandler.js";
+import Req from "Req";
+import Toasthandler from "Toasthandler";
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
