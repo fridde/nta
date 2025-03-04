@@ -29,7 +29,7 @@ class BookingFormController extends AbstractController
     {
     }
 
-    #[Route('/boka/box')]
+    #[Route('/boka/box', name: 'booking_form')]
     #[Template('booking_form.html.twig')]
     public function bookBox(Request $request): array|RedirectResponse
     {

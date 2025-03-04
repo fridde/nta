@@ -23,7 +23,7 @@ class ToolController extends DashboardController
         return new Response();
     }
 
-    #[Route('/admin/box-status')]
+    #[Route('/admin/box-status', name: 'tools_box_status')]
     #[Template('admin/tools/box_status.html.twig')]
     public function showBoxStatus(): array
     {

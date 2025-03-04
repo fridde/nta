@@ -28,51 +28,16 @@ class ImageDetectorController extends AbstractController
 
     }
 
-    #[Route('/item/rename-photos')]
-    public function renamePhotos(): Response
-    {
-        $return = [];
 
-        $photoTimesData = $this->getPhotoTimesData();
-        usort($photoTimesData, fn($a, $b) => Carbon::parse($a["Timestamp"])->isAfter(Carbon::parse($b["Timestamp"])) ? 1 : -1);
-
-        $lastKey = count($photoTimesData) - 1;
-        $dirname = $this->kernel->getProjectDir() . '/data/item_images';
-        $photos = Finder::create()->files()->in($dirname)->sortByName();
-
-
-        foreach ($photoTimesData as $key => $photoTimeData) {
-            $givenTime =  Carbon::parse($photoTimeData["Timestamp"]);
-            foreach($photos as $photo) {
-                $base = $photo->getBasename('.jpg');
-                $parts = explode("_", $base);
-                if(count($parts) < 3) {
-                    continue;
-                }
-                $fileTime = Carbon::createFromFormat('Ymd His', implode(' ', [$parts[1], $parts[2]]));
-                $isAfter = $fileTime->isAfter($givenTime);
-                $isBefore = true;
-                if($key < $lastKey) {
-                    $isBefore = $fileTime->isBefore(Carbon::parse($photoTimesData[$key+1]["Timestamp"]));
-                }
-                if($isAfter && $isBefore) {
-                    $random = substr(md5(microtime()), 0, 3);
-                    $newFileName = strtolower($photoTimeData['Artikel']) . '_' . $random . '.jpg';
-                    $this->fileSystem->rename($photo->getPathname(), $dirname . '/' . $newFileName);
-                }
-            }
-        }
-
-        return new Response(json_encode($return));
-    }
-
-    #[Route('/item/recalculate')]
+    #[Route('/item/recognize')]
     #[Template('admin/image_model_recalculation.html.twig')]
-    public function showRecalcButtons(): array
+    public function recognizeItem(): array
     {
 
+        $namesString = $this->fileSystem->readFile($this->kernel->getProjectDir() . '/public/image_model/class_names.txt');
+        $classNames = explode(",", $namesString);
         
-        return [];
+        return ['class_names' => $classNames];
     }
 
     #[Route('/api/get-photo-dates')]

@@ -32,7 +32,7 @@ class DashboardController extends AbstractDashboardController
             ['Föremål', 'flask', Item::class]
         ],
         'routes' => [
-//            ['Mejlutskick', 'envelope', 'tools_send_mail'],
+            ['Lådstatus', 'box', 'tools_box_status'],
 //            ['Skolor besöksordning', 'sort-numeric-down', 'tools_order_schools'],
 //            ['Skapa API-keys', 'key', 'tools_create_api_keys'],
 //            ['Kolla upp användare', 'magnifying-glass' ,'tools_lookup_profile', ['mail' => '1']],
@@ -80,7 +80,6 @@ class DashboardController extends AbstractDashboardController
                 ->setSubItems($this->getSchoolsAsMenuItems()),
 
             MenuItem::section(),
-            //MenuItem::linkToLogout('Logout', 'fas fa-sign-out-alt')
         ];
 
     }
