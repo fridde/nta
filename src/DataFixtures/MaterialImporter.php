@@ -8,26 +8,25 @@ use App\Entity\Topic;
 use App\Enums\InventoryType;
 use App\Utils\RepoContainer;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MaterialImporter
 {
-    private const string DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRCydR3_LzWvq0xk5yoniKvlPHNZPI1D5O0vGSNy1iZNlQFEZJOLFB7Ei1fe7AijduTlWO3umOAoTHP/pub?gid=1360401760&single=true&output=csv';
 
     public function __construct(
         private readonly RepoContainer       $rc,
         private readonly HttpClientInterface $httpClient,
         private readonly SerializerInterface $serializer,
-        private LoggerInterface              $logger,
+        private readonly LoggerInterface     $logger,
+        private readonly string              $materiallistaUrl
     )
     {
     }
 
     public function getData(): array
     {
-        $response = $this->httpClient->request('GET', self::DATA_URL);
+        $response = $this->httpClient->request('GET', $this->materiallistaUrl);
 
         return $this->serializer->decode($response->getContent(), 'csv');
     }
@@ -66,10 +65,6 @@ class MaterialImporter
             $boxAmounts = self::getSplitValues($row, 'Antal i lådan');
             $extraAmounts = self::getSplitValues($row, 'Förbrukning');
 
-//            if($row['id'] === 'URM'){
-//                $this->logger->info(print_r($extraAmounts, true));
-//            }
-
             foreach ($topicIds as $index => $topicId) {
                 $inventory = new Inventory(InventoryType::BOX);
 
@@ -106,8 +101,6 @@ class MaterialImporter
             explode(';', $ntMateriel)
         )];
         if($orderInfo !== ""){
-//            $this->logger->debug("ORDER INFO: " . print_r(json_decode($orderInfo, true)));
-
             $return = array_merge($return, json_decode($orderInfo, true));
         }
 

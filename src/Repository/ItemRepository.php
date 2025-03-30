@@ -3,41 +3,22 @@
 namespace App\Repository;
 
 use App\Entity\Item;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Utils\Coll;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Expr\Comparison;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\AST\ComparisonExpression;
 
-/**
- * @extends ServiceEntityRepository<Item>
- */
-class ItemRepository extends ServiceEntityRepository
+
+class ItemRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    use Filterable;
+
+    public function getItems(array $itemIds): Coll
     {
-        parent::__construct($registry, Item::class);
+        $this->addAndFilter('id', $itemIds, Comparison::IN);
+
+        return $this->getMatching();
     }
 
-    //    /**
-    //     * @return Item[] Returns an array of Item objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('i.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Item
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

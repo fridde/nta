@@ -4,6 +4,8 @@ namespace App\Controller\Api;
 
 use App\Entity\Box;
 use App\Entity\BoxStatusUpdate;
+use App\Entity\Inventory;
+use App\Entity\Topic;
 use App\Enums\UpdateType;
 use App\Utils\RepoContainer;
 use Carbon\Carbon;
@@ -53,6 +55,20 @@ class AdminApiController extends AbstractController
         $this->em->flush();
 
         return new JsonResponse(['success' => true]);
+    }
+
+    #[Route('/api/get-inventory-list/{topic}')]
+    public function getInventoryList(Topic $topic): JsonResponse
+    {
+        $data = $this->rc->getInventoryRepo()->getInventoryForTopic($topic);
+        $rows = $data->map(fn(Inventory $i) => [
+            'desc' => $i->getItem()->getMostSimpleLabel(),
+            'amount' => $i->getQuantity(),
+            'comment' => $i->getItem()->getUserInfo(),
+            'counted' => str_contains(mb_strtolower($i->getItem()->getUserInfo()), 'räknas'),
+        ])->toArray();
+
+        return new JsonResponse(['rows' => $rows]);
     }
 
 }

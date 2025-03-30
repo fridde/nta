@@ -36,11 +36,28 @@ class ToolController extends DashboardController
             ])];
     }
 
-    #[Route('/admin/update-box-status')]
+    #[Route('/admin/update-box-status', name: 'tools_update_box_status')]
     #[Template('admin/tools/update_box_status.html.twig')]
     public function batchUpdateBoxStatus(): array
     {
         return ['update_types' => UpdateType::cases()];
+    }
+
+    #[Route('/admin/create-box-inventory', name: 'tools_create_box_inventory')]
+    #[Template('admin/tools/create_box_inventory.html.twig')]
+    public function createBoxInventory(): array
+    {
+        $rows = [[
+            'desc' => 'Gem, metall',
+            'amount' => 200,
+            'comment' => 'Återlämnas',
+            'counted' => false
+        ]];
+
+        return [
+            'topics' => $this->rc->getTopicRepo()->findAll(),
+            'rows' => $rows,
+        ];
     }
 
     #[Route('/admin/create-invoice')]

@@ -33,6 +33,8 @@ class DashboardController extends AbstractDashboardController
         ],
         'routes' => [
             ['Lådstatus', 'box', 'tools_box_status'],
+            ['Uppdatera lådstatus', 'truck-loading', 'tools_update_box_status'],
+            ['Skapa inventeringslista', 'clipboard-list', 'tools_create_box_inventory'],
 //            ['Skolor besöksordning', 'sort-numeric-down', 'tools_order_schools'],
 //            ['Skapa API-keys', 'key', 'tools_create_api_keys'],
 //            ['Kolla upp användare', 'magnifying-glass' ,'tools_lookup_profile', ['mail' => '1']],

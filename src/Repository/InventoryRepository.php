@@ -2,42 +2,23 @@
 
 namespace App\Repository;
 
-use App\Entity\Inventory;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Topic;
+use App\Enums\InventoryType;
+use App\Utils\Coll;
+use Doctrine\ORM\EntityRepository;
 
-/**
- * @extends ServiceEntityRepository<Inventory>
- */
-class InventoryRepository extends ServiceEntityRepository
+
+class InventoryRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    use Filterable;
+
+    public function getInventoryForTopic(Topic $topic): Coll
     {
-        parent::__construct($registry, Inventory::class);
+        $this->addAndFilter('InventoryType', InventoryType::BOX);
+        $this->addAndFilter('Topic', $topic);
+        $this->addOrder('ListRank');
+
+        return $this->getMatching();
     }
 
-    //    /**
-    //     * @return Inventory[] Returns an array of Inventory objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('i.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Inventory
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

@@ -52,7 +52,7 @@ trait Filterable
         return new Comparison($fieldName, $operator, $value);
     }
 
-    public function addOrder(string $fieldName, string $direction = Criteria::ASC): self
+    public function addOrder(string $fieldName, string $direction = Order::Ascending->value): self
     {
         return $this->addMultipleOrders([$fieldName => $direction]);
     }
@@ -61,10 +61,10 @@ trait Filterable
     {
         $sortedOrders = [];
         foreach ($orders as $field => $direction) {
-            if (in_array($direction, [Order::Ascending, Order::Descending], true)) {
+            if (in_array($direction, [Order::Ascending->value, Order::Descending->value], true)) {
                 $sortedOrders[$field] = $direction;
             } else {
-                $sortedOrders[$direction] = Order::Ascending; // default value
+                $sortedOrders[$direction] = Order::Ascending->value; // default value
             }
         }
 

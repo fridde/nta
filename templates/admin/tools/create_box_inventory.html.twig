@@ -1,0 +1,27 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block admin_page_content %}
+    <div {{ stimulus_controller('inventorylist') }}>
+        <div>
+            <select id="topic-selector" {{ stimulus_action('inventorylist', 'updateInventoryList') }}>
+                {% for topic in topics %}
+                    <option value="{{ topic.id }}">{{ topic.Name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <table >
+                <thead>
+                <tr>
+                    <th>Beskrivning</th>
+                    <th>Antal i lådan</th>
+                    <th>Kommentar</th>
+                    <th>Inventerat antal</th>
+                </tr>
+                </thead>
+                <tbody {{ stimulus_target('inventorylist', 'table') }} id="inventory-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

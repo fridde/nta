@@ -25,7 +25,7 @@ echo 'APP_ENV=prod' > .env.local
 
 cd ~/projekt/$PROJECT_NAME
 
-cons assets:install
+cons asset-map:compile
 cp -r public/{build,bundles} $STAGING/$PROJECT_NAME/public
 
 cd $STAGING/$PROJECT_NAME

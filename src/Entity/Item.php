@@ -96,6 +96,15 @@ class Item
         $this->SimpleLabel = $SimpleLabel;
     }
 
+    public function getMostSimpleLabel(): string
+    {
+        $label = $this->getSimpleLabel();
+        if (empty($label)) {
+            return $this->getDetailedLabel();
+        }
+        return $label;
+    }
+
     public function getStaffInfo(): ?array
     {
         return $this->StaffInfo;
@@ -135,10 +144,6 @@ class Item
     {
         $this->InventoryStatusUpdates = $InventoryStatusUpdates;
     }
-
-
-
-
 
 
 }
