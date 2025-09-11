@@ -66,7 +66,7 @@ class UserApiController extends AbstractController
 
         $isAdmin = $this->security->isGranted(Role::ADMIN->value);
 
-        if(!($isAdmin || $requestingUser->hasSchool($user->getSchool()))){
+        if(!($isAdmin || $requestingUser->hasSchool($user->School))){
             throw $this->createAccessDeniedException();
         }
         $user->addRole(Role ::ACTIVE_USER);
@@ -77,7 +77,7 @@ class UserApiController extends AbstractController
             $msg .= 'Kontakta oss ifall detta bör ändras!';
 
             return $this->asJson([
-                'error' => sprintf($msg, $user->getMail(), $user->getSchool()->getName())
+                'error' => sprintf($msg, $user->Mail, $user->School->getName())
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -85,7 +85,7 @@ class UserApiController extends AbstractController
 //            return new Response('<h1>Användare har lagts till</h1>');
 //        }
 
-        return $this->asJson(['temp_id' => $tempId, 'user_id' => $user->getId()]);
+        return $this->asJson(['temp_id' => $tempId, 'user_id' => $user->id]);
     }
 
     private function asJson($data, int $status = Response::HTTP_OK): JsonResponse

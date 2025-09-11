@@ -47,9 +47,9 @@ class AdminApiController extends AbstractController
            $bsu =  new BoxStatusUpdate();
            $box = $boxRepo->find(Box::standardizeId($boxId));
            //assertInstanceOf(Box::class, $box, sprintf('Box %s not found', $boxId));
-           $bsu->setBox($box);
-           $bsu->setType($updateType);
-           $bsu->setDate(Carbon::now());
+           $bsu->Box = $box;
+           $bsu->Type = $updateType;
+           $bsu->Date = Carbon::now();
            $this->em->persist($bsu);
         }
         $this->em->flush();
@@ -62,10 +62,10 @@ class AdminApiController extends AbstractController
     {
         $data = $this->rc->getInventoryRepo()->getInventoryForTopic($topic);
         $rows = $data->map(fn(Inventory $i) => [
-            'desc' => $i->getItem()->getMostSimpleLabel(),
-            'amount' => $i->getQuantity(),
-            'comment' => $i->getItem()->getUserInfo(),
-            'counted' => str_contains(mb_strtolower($i->getItem()->getUserInfo()), 'räknas'),
+            'desc' => $i->Item->getMostSimpleLabel(),
+            'amount' => $i->Quantity,
+            'comment' => $i->Item->UserInfo,
+            'counted' => str_contains(mb_strtolower($i->Item->UserInfo), 'räknas'),
         ])->toArray();
 
         return new JsonResponse(['rows' => $rows]);

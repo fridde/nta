@@ -35,7 +35,7 @@ class BoxBookingFormType extends AbstractType
                 'class' => Topic::class,
                 'choice_label' => 'Name',
                 'placeholder' => '---Välj tema---',
-                'choice_attr' => fn(Topic $t) => $boxesLeft[$closestPeriod->getId()][$t->getId()] === 0 ? ['disabled' => 'disabled'] : [],
+                'choice_attr' => fn(Topic $t) => $boxesLeft[$closestPeriod->id][$t->id] === 0 ? ['disabled' => 'disabled'] : [],
                 'attr' => ['data-bookingform-target' => 'topicSelector' ],
                 'help' => 'Om ett tema inte går att välja beror det på att det inte finns tillräckligt med lådor kvar.'
             ])

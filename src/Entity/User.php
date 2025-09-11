@@ -17,28 +17,50 @@ class User implements UserInterface
 {
 
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
-    protected int $id;
+    public int $id;
 
     #[ORM\Column(nullable: true)]
-    protected ?string $FirstName;
+    public ?string $FirstName;
 
     #[ORM\Column(nullable: true)]
-    protected ?string $LastName;
+    public ?string $LastName;
 
     #[ORM\Column(unique: true)]
-    protected string $Mail;
-    
+    public string $Mail {
+        get => $this->Mail;
+        set(?string $value) {
+            $this->Mail = mb_strtolower(trim($value));
+        }
+    }
+
     #[ORM\Column(type: Types::JSON)]
-    protected array $Roles = [];
+    public array $Roles = [] {
+        get {
+            $roles = Coll::create($this->Roles);
+            $roles->add(Role::USER->value);
+
+            return $roles->unique()->toArray();
+        }
+        set(array $rolesAsStrings) {
+            $roles = Coll::create($rolesAsStrings);
+            $roles->removeElement(Role::USER->value);
+
+            $this->Roles = $roles->toArray();
+        }
+    }
 
     #[ORM\ManyToOne(targetEntity: School::class, inversedBy: "Users")]
-    protected School $School;
+    public School $School;
 
     #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: "BoxOwner")]
-    protected Collection $Bookings;
+    public Collection $Bookings;
 
     #[ORM\OneToMany(targetEntity: Qualification::class, mappedBy: "User")]
-    protected Collection $Qualifications;
+    public Collection $Qualifications;
+
+    public string $FullName {
+        get => $this->FirstName . ' ' . $this->LastName;
+    }
 
     public function __construct()
     {
@@ -47,97 +69,20 @@ class User implements UserInterface
 
     public function __toString(): string
     {
-        return $this->FirstName . ' ' . $this->LastName . ' [' .  strtoupper($this->School->getId()) . ']';
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->FirstName;
-    }
-
-    public function setFirstName(?string $FirstName): void
-    {
-        $this->FirstName = $FirstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->LastName;
-    }
-
-    public function setLastName(?string $LastName): void
-    {
-        $this->LastName = $LastName;
-    }
-
-    public function getFullName(): string
-    {
-        return $this->FirstName . ' ' . $this->LastName;
-    }
-
-    public function getMail(): ?string
-    {
-        return $this->Mail;
-    }
-
-    public function setMail(?string $Mail): void
-    {
-        $this->Mail = mb_strtolower(trim($Mail));
+        return $this->FullName . ' [' .  strtoupper($this->School) . ']';
     }
 
     public function hasSchool(School $school): bool
     {
-        return $this->getSchool()->equals($school);
-    }
-
-    public function getSchool(): School
-    {
-        return $this->School;
-    }
-
-    #[ConvertToEntityFirst]
-    public function setSchool(School $School): void
-    {
-        $this->School = $School;
-    }
-
-    public function getBookings(): Collection
-    {
-        return $this->Bookings;
-    }
-
-    public function setBookings(Collection $Bookings): void
-    {
-        $this->Bookings = $Bookings;
-    }
-
-    public function getQualifications(): Collection
-    {
-        return $this->Qualifications;
+        return $this->School->equals($school);
     }
 
     public function getQualificationsAsArray(): array
     {
-        $keys = $this->getQualifications()
-            ->map(fn(Qualification $q) => $q->getTopic()->getId())
+        $keys = $this->Qualifications
+            ->map(fn(Qualification $q) => $q->Topic)
             ->toArray();
-        return array_combine($keys, $this->getQualifications()->toArray());
-    }
-
-    public function setQualifications(Collection $Qualifications): void
-    {
-        $this->Qualifications = $Qualifications;
+        return array_combine($keys, $this->Qualifications->toArray());
     }
 
     public function addQualification(Qualification $Qualification): void
@@ -145,28 +90,18 @@ class User implements UserInterface
         $this->Qualifications->add($Qualification);
     }
 
-    public function getRoles(): array
-    {
-        $roles = Coll::create($this->Roles);
-        $roles->add(Role::USER->value);
-
-        return $roles->unique()->toArray();
-    }
-
     public function addRole(Role $role): void
     {
         $roles = Coll::create($this->Roles);
         $roles->add($role->value);
 
-        $this->setRoles($roles->unique()->toArray());
+        $this->Roles = $roles->unique()->toArray();
     }
 
-    public function setRoles(array $rolesAsStrings): void
+    // methods below required by UserInterface
+    public function getRoles(): array
     {
-        $roles = Coll::create($rolesAsStrings);
-        $roles->removeElement(Role::USER->value);
-
-        $this->Roles = $roles->toArray();
+        return $this->Roles;
     }
 
     public function eraseCredentials(): void
@@ -175,7 +110,7 @@ class User implements UserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->getMail();
+        return $this->Mail;
     }
 
 

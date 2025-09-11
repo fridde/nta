@@ -16,23 +16,39 @@ class Period
 {
     #[ORM\Id]
     #[ORM\Column(length: 8, unique: true)]
-    private string $id;
+    public string $id;
 
     #[ORM\Column]
-    private DateTime $StartDate;
+    public DateTime $StartDate {
+        get => $this->StartDate;
+        set(DateTime|string $value) {
+            if (is_string($value)) {
+                $value = new Carbon($value);
+            }
+            $this->StartDate = $value;
+        }
+    }
 
     #[ORM\Column]
-    private DateTime $EndDate;
+    public DateTime $EndDate {
+        get => $this->EndDate;
+        set(DateTime|string $value) {
+            if (is_string($value)) {
+                $value = new Carbon($value);
+            }
+            $this->EndDate = $value;
+        }
+    }
 
     #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: "Period")]
-    private Collection $Bookings;
+    public Collection $Bookings;
 
     public function __construct(\DateTime|null $fromDate = null)
     {
         if($fromDate instanceof DateTime) {
             $date = Carbon::instance($fromDate);
             $semester = Semester::getSemesterForDate($date);
-            $this->setId($date->year . '.' . $semester->value);
+            $this->id = $date->year . '.' . $semester->value;
         }
         $this->Bookings = new Coll();
     }
@@ -44,17 +60,7 @@ class Period
 
     public function equals(Period $period): bool
     {
-        return $this->id === $period->getId();
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
+        return $this->id === $period->id;
     }
 
     public function getYear(): int
@@ -76,42 +82,6 @@ class Period
             return $yearComparison;
         }
         return $this->getSemester()->compare($period->getSemester());
-    }
-
-    public function getStartDate(): DateTime|Carbon
-    {
-        return $this->StartDate;
-    }
-
-    public function setStartDate(DateTime|string $StartDate): void
-    {
-        if(is_string($StartDate)) {
-            $StartDate = new Carbon($StartDate);
-        }
-        $this->StartDate = $StartDate;
-    }
-
-    public function getEndDate(): DateTime|Carbon
-    {
-        return $this->EndDate;
-    }
-
-    public function setEndDate(DateTime|string $EndDate): void
-    {
-        if(is_string($EndDate)) {
-            $EndDate = new Carbon($EndDate);
-        }
-        $this->EndDate = $EndDate;
-    }
-
-    public function getBookings(): Collection
-    {
-        return $this->Bookings;
-    }
-
-    public function setBookings(Collection $Bookings): void
-    {
-        $this->Bookings = $Bookings;
     }
 
     public function isCurrent(): bool

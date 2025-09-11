@@ -32,7 +32,7 @@ class PeriodRepository extends EntityRepository
         $result = [];
         foreach ($this->findAll() as $period) {
             /** @var Period $period */
-            $result[$period->getId()] = $period;
+            $result[$period->id] = $period;
         }
 
         return $result;

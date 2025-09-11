@@ -13,17 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
 class School
 {
     #[ORM\Id, ORM\Column(length: 8, unique: true)]
-    protected string $id;
+    public string $id;
 
     #[ORM\Column]
-    protected string $Name;
+    public string $Name;
 
     #[ORM\Column]
-    protected int $RouteOrder;
+    public int $RouteOrder;
 
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: "School")]
     #[ORM\OrderBy(["FirstName" => "ASC"])]
-    protected Collection $Users;
+    public Collection $Users;
 
     public function __construct()
     {
@@ -32,52 +32,12 @@ class School
 
     public function __toString(): string
     {
-        return mb_strtoupper($this->getId());
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getName(): string
-    {
-        return $this->Name;
-    }
-
-    public function setName($Name): void
-    {
-        $this->Name = $Name;
-    }
-
-    public function getRouteOrder(): int
-    {
-        return $this->RouteOrder;
-    }
-
-    public function setRouteOrder(int $RouteOrder): void
-    {
-        $this->RouteOrder = $RouteOrder;
-    }
-
-    public function getUsers(): Collection
-    {
-        return $this->Users;
-    }
-
-    public function setUsers(Collection $Users): void
-    {
-        $this->Users = $Users;
+        return mb_strtoupper($this->id);
     }
 
     public function equals(School $school): bool
     {
-        return $this->id === $school->getId();
+        return $this->id === $school->id;
     }
 
 

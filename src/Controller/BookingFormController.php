@@ -36,7 +36,7 @@ class BookingFormController extends AbstractController
         /** @var User $user */
 //        $user = $this->getUser();
         $user = $this->rc->getUserRepo()->find(3); // debugging: lars wikström, GALA
-        $school = $user->getSchool();
+        $school = $user->School;
         $users = $this->rc->getUserRepo()->hasSchool($school)->getMatching()->toArray();
         $futurePeriods = $this->rc->getPeriodRepo()->getFuturePeriods();
 
@@ -44,7 +44,7 @@ class BookingFormController extends AbstractController
         $nrBoxesLeft = $this->calculateNrOfBoxesLeft($boxesLeft);
 
         $booking = new Booking();
-        $booking->setPeriod($this->rc->getPeriodRepo()->getCurrentPeriod());
+        $booking->Period = $this->rc->getPeriodRepo()->getCurrentPeriod();
 
         $form = $this->createForm(BoxBookingFormType::class, $booking, [
             'users' => $users,
@@ -56,12 +56,12 @@ class BookingFormController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Booking $thisBooking */
             $thisBooking = $form->getData();
-            $nrBoxes = $nrBoxesLeft[$thisBooking->getPeriod()->getId()][$thisBooking->getTopic()->getId()];
-            if($thisBooking->getNrBoxes() > $nrBoxes){
+            $nrBoxes = $nrBoxesLeft[$thisBooking->Period->id][$thisBooking->Topic];
+            if($thisBooking->NrBoxes > $nrBoxes){
                 throw new \Exception('Det finns inte så många lådor som du vill ha!');
             }
-            $boxesForTopic = $boxesLeft[$thisBooking->getPeriod()->getId()][$thisBooking->getTopic()->getId()];
-            foreach(range(1, $thisBooking->getNrBoxes()) as $boxCount){
+            $boxesForTopic = $boxesLeft[$thisBooking->Period->id][$thisBooking->Topic];
+            foreach(range(1, $thisBooking->NrBoxes) as $boxCount){
                 $thisBooking->addBox($boxesForTopic[$boxCount]);
             }
             $this->em->persist($thisBooking);
@@ -77,20 +77,20 @@ class BookingFormController extends AbstractController
     {
        $topicIds = Coll::create($this->rc->getTopicRepo()->findAll())
            //->filter(fn(Topic $t) => $t->needsBoxes())
-           ->map(fn(Topic $t) => $t->getId())
+           ->map(fn(Topic $t) => $t->id)
            ->toArray();
        $topicTemplate = array_fill_keys($topicIds, []);
-       $periodIds = $periods->map(fn(Period $p) => $p->getId())->toArray();
+       $periodIds = $periods->map(fn(Period $p) => $p->id)->toArray();
        $return = array_fill_keys($periodIds, $topicTemplate);
        $boxes = $this->rc->getBoxRepo()->findAll();
 
         foreach ($periods as $period) {
             /** @var Period $period */
-            $periodId = $period->getId();
+            $periodId = $period->id;
             foreach($boxes as $box) {
                 /** @var Box $box */
                 if(!$box->hasBooking($period)) {
-                    $return[$periodId][$box->getTopic()->getId()][] = $box;
+                    $return[$periodId][$box->Topic][] = $box;
                 }
             }
         }

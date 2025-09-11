@@ -6,29 +6,19 @@ use Doctrine\Common\Collections\Collection;
 
 class BoxSet
 {
-    private Collection $Boxes;
-
-    public function getBoxes(): Collection
-    {
-        return $this->Boxes;
-    }
-
-    public function setBoxes(Collection $Boxes): void
-    {
-        $this->Boxes = $Boxes;
-    }
+    public Collection $Boxes;
 
     public function getTopic(): Topic
     {
         /** @var Box $box */
-        $box = $this->getBoxes()->first();
+        $box = $this->Boxes->first();
 
-        return $box->getTopic();
+        return $box->Topic;
     }
 
     public function getNrBoxes(): int
     {
-        return $this->getBoxes()->count();
+        return $this->Boxes->count();
     }
 
 

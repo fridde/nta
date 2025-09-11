@@ -19,7 +19,7 @@ class ApiKeyManager
         return $this->calculateHashForKey($key) === $key->hash;
     }
 
-    public function createKeyFromGivenString(string $givenString = null): Key
+    public function createKeyFromGivenString(string|null $givenString = null): Key
     {
         $key = new Key();
         if (!empty($givenString)) {
@@ -29,7 +29,7 @@ class ApiKeyManager
         return $key;
     }
 
-    public function createKeyFromValues(string $id = '', string $salt = null): Key
+    public function createKeyFromValues(string $id = '', string|null $salt = null): Key
     {
         $key = Key::create()->setId($id);
         $key->setSalt($salt);

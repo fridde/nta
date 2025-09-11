@@ -175,9 +175,9 @@ class AppFixtures extends Fixture
         $b = new Booking();
         $userRepo = $this->om->getRepository(User::class);
 
-        $b->setBoxOwner($userRepo->find($row['BoxOwner']));
+        $b->BoxOwner = $userRepo->find($row['BoxOwner']);
         if ($row['Booker']) {
-            $b->setBooker($userRepo->find($row['Booker']));
+            $b->Booker = $userRepo->find($row['Booker']);
         }
 
         return $b;
@@ -187,8 +187,8 @@ class AppFixtures extends Fixture
     {
         $i = new Item();
 
-        $i->setOrderInfo(json_decode($row['OrderInfo'], associative: true));
-        $i->setStaffInfo(json_decode($row['StaffInfo'], associative: true));
+        $i->OrderInfo = json_decode($row['OrderInfo'], associative: true);
+        $i->StaffInfo = json_decode($row['StaffInfo'], associative: true);
 
         return $i;
     }
@@ -197,12 +197,12 @@ class AppFixtures extends Fixture
     {
         $i = new Inventory();
         $itemRepo = $this->om->getRepository(Item::class);
-        $i->setItem($itemRepo->find($row['Item']));
+        $i->Item = $itemRepo->find($row['Item']);
 
         $topicRepo = $this->om->getRepository(Topic::class);
-        $i->setTopic($topicRepo->find($row['Topic']));
+        $i->Topic = $topicRepo->find($row['Topic']);
 
-        $i->setInventoryType(InventoryType::from((int)$row['InventoryType']));
+        $i->InventoryType = InventoryType::from((int)$row['InventoryType']);
 
         return $i;
     }
@@ -210,7 +210,7 @@ class AppFixtures extends Fixture
     private function createBoxStatusUpdate(array $row): BoxStatusUpdate
     {
         $s = new BoxStatusUpdate();
-        $s->setType(UpdateType::from($row['Type']));
+        $s->Type = UpdateType::from($row['Type']);
 
         return $s;
     }

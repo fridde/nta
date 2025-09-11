@@ -23,9 +23,9 @@ class AuthenticationUtils
         return $this->em->find(User::class, $key->id);
     }
 
-    public function createCookieWithAuthKey(User $user, Carbon $expDate = null): Cookie
+    public function createCookieWithAuthKey(User $user, Carbon|null $expDate = null): Cookie
     {
-        $key = $this->akm->createKeyFromValues($user->getId());
+        $key = $this->akm->createKeyFromValues($user->id);
 
         return Cookie::create('key')
             ->withValue($this->akm->createCodeStringForKey($key))
@@ -36,7 +36,7 @@ class AuthenticationUtils
 
     public function createUrlKeyStringForUser(User $user): string
     {
-        $key = $this->akm->createKeyFromValues($user->getId());
+        $key = $this->akm->createKeyFromValues($user->id);
 
         return $this->akm->createCodeStringForKey($key);
     }

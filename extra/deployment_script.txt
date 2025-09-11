@@ -1,6 +1,5 @@
 ## SET VARIABLES
 echo nta /tmp 'https://github.com/fridde/nta.git' | read PROJECT_NAME STAGING GITHUB
-
 cd ~/projekt/$PROJECT_NAME
 sf-dmm
 

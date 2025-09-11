@@ -35,7 +35,7 @@ class CourseRegistrationFormController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $school = $user->getSchool();
+        $school = $user->School;
         $users = $this->rc->getUserRepo()->hasSchool($school)->getMatching();
 
         $form = $this->createForm(CourseRegistrationFormType::class, null, [
@@ -67,15 +67,15 @@ class CourseRegistrationFormController extends AbstractController
 
         foreach ($qualifications as $qualification) {
             /** @var Qualification $qualification */
-            $userId = $qualification->getUser()->getId();
+            $userId = $qualification->User;
             $return[$userId] ??= [];
-            $return[$userId][] = $qualification->getTopic()->getId();
+            $return[$userId][] = $qualification->Topic;
         }
         foreach ($courseRegistrations as $courseRegistration) {
             /** @var CourseRegistration $courseRegistration */
-            $userId = $courseRegistration->getUser()->getId();
+            $userId = $courseRegistration->User;
             $return[$userId] ??= [];
-            $return[$userId][] = $courseRegistration->getTopic()->getId();
+            $return[$userId][] = $courseRegistration->Topic;
         }
 
         return $return;

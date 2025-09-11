@@ -13,18 +13,20 @@ use Doctrine\ORM\Mapping as ORM;
 class Box 
 {
     #[ORM\Id, ORM\Column(length:8, unique: true)]
-    protected string $id;
+    public string $id {
+        get =>  $this->id;
+    }
 
 
     #[ORM\ManyToOne(targetEntity: Topic::class)]
-    protected Topic $Topic;
+    public Topic $Topic;
 
     #[Orm\ManyToMany(targetEntity: Booking::class, inversedBy: "Boxes")]
-    private Collection $Bookings;
+    public Collection $Bookings;
 
     #[ORM\OrderBy(['Date' => 'DESC'])]
     #[ORM\OneToMany(targetEntity: BoxStatusUpdate::class, mappedBy: "Box")]
-    private Collection $StatusUpdates;
+    public Collection $StatusUpdates;
 
     private ?array $BoxParts = null;
 
@@ -36,23 +38,14 @@ class Box
 
     public function __toString(): string
     {
-        return mb_strtoupper($this->getId());
+        return mb_strtoupper($this->id);
     }
 
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
 
     public function getFormattedId(): string
     {
         $this->determineBoxParts();
-        $parts = [$this->getTopic()->getId(), ...$this->BoxParts];
+        $parts = [$this->Topic, ...$this->BoxParts];
 
         return mb_strtoupper(implode(':', $parts));
     }
@@ -97,31 +90,11 @@ class Box
         return $this->BoxParts['letter'] ?? null;
     }
 
-    public function getTopic(): Topic
-    {
-        return $this->Topic;
-    }
-
-    public function setTopic(Topic $Topic): void
-    {
-        $this->Topic = $Topic;
-    }
-
-    public function getBookings(): Collection
-    {
-        return $this->Bookings;
-    }
-
     public function hasBooking(Period $period): bool
     {
-        return !$this->getBookings()
-            ->filter(fn(Booking $b) => $b->getPeriod() === $period)
+        return !$this->Bookings
+            ->filter(fn(Booking $b) => $b->Period === $period)
             ->isEmpty();
-    }
-
-    public function setBookings(Collection $Bookings): void
-    {
-        $this->Bookings = $Bookings;
     }
 
     public function addBooking(Booking $Booking): void
@@ -129,19 +102,9 @@ class Box
         $this->Bookings->add($Booking);
     }
 
-    public function getStatusUpdates(): Collection
-    {
-        return $this->StatusUpdates;
-    }
-
-    public function setStatusUpdates(Collection $StatusUpdates): void
-    {
-        $this->StatusUpdates = $StatusUpdates;
-    }
-
     public function getLatestStatusUpdate(?UpdateType $type = null): ?BoxStatusUpdate
     {
-        return (new Coll($this->getStatusUpdates()))->first();
+        return new Coll($this->StatusUpdates)->first();
     }
 
 

@@ -118,8 +118,8 @@ class AzureAuthenticator extends AbstractAuthenticator
     {
         foreach ($this->userData as $propertyName => $propertyValue) {
             $missing = match ($propertyName) {
-                'FirstName' => empty($user->getFirstName()),
-                'LastName' => empty($user->getLastName()),
+                'FirstName' => empty($user->FirstName),
+                'LastName' => empty($user->LastName),
                 default => false
             };
             if ($missing && $propertyValue !== null) {

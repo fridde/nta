@@ -12,7 +12,7 @@ class TopicRepository extends EntityRepository
         $result = [];
         foreach ($this->findAll() as $topic) {
             /** @var Topic $topic */
-            $result[$topic->getId()] = $topic->getName();
+            $result[$topic->id] = $topic->Name;
         }
 
         return $result;

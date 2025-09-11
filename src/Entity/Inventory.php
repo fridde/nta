@@ -13,88 +13,33 @@ class Inventory
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[ORM\Column]
-    private InventoryType $InventoryType;
+    public InventoryType $InventoryType;
 
     #[ORM\ManyToOne(targetEntity: Item::class)]
-    private Item $Item;
+    public Item $Item;
 
     #[ORM\Column]
-    private int $Quantity;
+    public int $Quantity;
 
     #[ORM\ManyToOne(targetEntity: Topic::class)]
-    private ?Topic $Topic = null;
+    public ?Topic $Topic = null;
 
     #[ORM\Column]
-    private int $ListRank = 0;
+    public int $ListRank = 0 {
+        get => $this->ListRank;
+        set(?int $value) {
+            $this->ListRank = $value ?? 0;
+        }
+    }
 
     public function __construct(null|InventoryType $inventoryType = null)
     {
         if($inventoryType instanceof InventoryType) {
             $this->InventoryType = $inventoryType;
         }
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getInventoryType(): InventoryType
-    {
-        return $this->InventoryType;
-    }
-
-    public function setInventoryType(InventoryType $InventoryType): void
-    {
-        $this->InventoryType = $InventoryType;
-    }
-
-    public function getItem(): Item
-    {
-        return $this->Item;
-    }
-
-    public function setItem(Item $Item): void
-    {
-        $this->Item = $Item;
-    }
-
-    public function getQuantity(): int
-    {
-        return $this->Quantity;
-    }
-
-    public function setQuantity(int $Quantity): void
-    {
-        $this->Quantity = $Quantity;
-    }
-
-    public function getTopic(): ?Topic
-    {
-        return $this->Topic;
-    }
-
-    public function setTopic(?Topic $Topic): void
-    {
-        $this->Topic = $Topic;
-    }
-
-    public function getListRank(): ?int
-    {
-        return $this->ListRank;
-    }
-
-    public function setListRank(?int $ListRank): void
-    {
-        $this->ListRank = $ListRank ?? 0;
     }
 
 

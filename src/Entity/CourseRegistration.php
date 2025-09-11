@@ -13,57 +13,21 @@ class CourseRegistration
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    private User $User;
+    public User $User;
 
     #[ORM\ManyToOne(targetEntity: Topic::class)]
-    private Topic $Topic;
+    public Topic $Topic;
 
     #[ORM\Column]
-    private \DateTime $RegisteredAt;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getUser(): User
-    {
-        return $this->User;
-    }
-
-    public function setUser(User $User): void
-    {
-        $this->User = $User;
-    }
-
-    public function getTopic(): Topic
-    {
-        return $this->Topic;
-    }
-
-    public function setTopic(Topic $Topic): void
-    {
-        $this->Topic = $Topic;
-    }
-
-    public function getRegisteredAt(): \DateTime
-    {
-        return $this->RegisteredAt;
-    }
-
-    public function setRegisteredAt(\DateTime $RegisteredAt): void
-    {
-        $this->RegisteredAt = $RegisteredAt;
-    }
+    public \DateTime $RegisteredAt;
 
     #[ORM\PrePersist]
     public function setCreationDate(): void
     {
-        $this->setRegisteredAt(Carbon::now());
-
+        $this->RegisteredAt = Carbon::now();
     }
 
 

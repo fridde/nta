@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="6dff34b1-6c70-40f7-b977-89e1a41c871c" name="WSL" url="https://nta.local">
+        <fileTransfer mountedRoot="\\wsl$\Ubuntu-22.04\home\fridde\projekt\nta" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -14,7 +14,7 @@ class QualificationRepository extends EntityRepository
 
     public function forUsers(Coll $users): self
     {
-        $ids = $users->map(fn(User $u) => $u->getId())->toArray();
+        $ids = $users->map(fn(User $u) => $u->id)->toArray();
 
         return $this->addAndFilter('User', $ids, Comparison::IN);
     }

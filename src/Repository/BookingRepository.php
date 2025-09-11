@@ -15,13 +15,13 @@ class BookingRepository extends EntityRepository
 
     public function hasPeriod(Period $period): self
     {
-        return $this->addAndFilter('Period', $period->getId());
+        return $this->addAndFilter('Period', $period->id);
     }
 
     public function getBookingsFromSchool(School $school): Coll
     {
         return Coll::create($this->findAll())
-            ->filter(fn(Booking $b) => $b->getBoxOwner()->hasSchool($school));
+            ->filter(fn(Booking $b) => $b->BoxOwner->hasSchool($school));
     }
 
     public function getBookingsForPeriod(Period $period): Coll
@@ -38,7 +38,7 @@ class BookingRepository extends EntityRepository
     {
         $result = [];
         $Bookings->walk(function(Booking $b) use(&$result) {
-            $pId = $b->getPeriod()->getId();
+            $pId = $b->Period->id;
             $result[$pId] ??= Coll::create();
             $result[$pId]->add($b);
         });

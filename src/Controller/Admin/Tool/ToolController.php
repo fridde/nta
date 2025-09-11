@@ -32,7 +32,7 @@ class ToolController extends DashboardController
         return [
             'boxes' => $boxes->map(fn(Box $b) => [
                 'id' => $b->getFormattedId(),
-                'status' => $b->getLatestStatusUpdate()?->getType()->value
+                'status' => $b->getLatestStatusUpdate()->Type->value
             ])];
     }
 

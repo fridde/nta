@@ -43,13 +43,13 @@ class SameSchoolVoter extends Voter
         School|User|Booking|CourseRegistration $subject
     ): bool
     {
-        $userSchool = $user->getSchool();
+        $userSchool = $user->School;
 
         return match(true){
             $subject instanceof School => $subject->equals($userSchool),
-            $subject instanceof Booking => $subject->getBoxOwner()->hasSchool($userSchool),
+            $subject instanceof Booking => $subject->BoxOwner->hasSchool($userSchool),
             $subject instanceof User => $subject->hasSchool($userSchool),
-            $subject instanceof CourseRegistration => $subject->getUser()->hasSchool($userSchool),
+            $subject instanceof CourseRegistration => $subject->User->hasSchool($userSchool),
         };
     }
 }

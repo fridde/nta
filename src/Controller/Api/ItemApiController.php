@@ -59,11 +59,11 @@ class ItemApiController extends AbstractController
 
         $items = $this->rc->getItemRepo()->getItems($itemIds)
             ->map(fn(Item $i) => [
-                'id' => $i->getId(),
-                'placement' => $i->getPlacement(),
-                'detailed_label' => $i->getDetailedLabel(),
-                'simple_label' => $i->getSimpleLabel(),
-                'staff_info' => $i->getStaffInfo(),
+                'id' => $i->id,
+                'placement' => $i->Placement,
+                'detailed_label' => $i->DetailedLabel,
+                'simple_label' => $i->SimpleLabel,
+                'staff_info' => $i->StaffInfo,
             ])
             ->toArray();
 

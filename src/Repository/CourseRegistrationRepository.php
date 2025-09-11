@@ -15,7 +15,7 @@ class CourseRegistrationRepository extends EntityRepository
 
     public function forUsers(Coll $users): self
     {
-        $ids = $users->map(fn(User $u) => $u->getId())->toArray();
+        $ids = $users->map(fn(User $u) => $u->id)->toArray();
 
         return $this->addAndFilter('User', $ids, Comparison::IN);
     }
@@ -24,7 +24,7 @@ class CourseRegistrationRepository extends EntityRepository
     {
         $result = [];
         $CourseRegistrations->walk(function (CourseRegistration $cR) use (&$result) {
-            $tId = $cR->getTopic()->getId();
+            $tId = $cR->Topic;
             $result[$tId] ??= Coll::create();
             $result[$tId]->add($cR);
         });
@@ -36,7 +36,7 @@ class CourseRegistrationRepository extends EntityRepository
     {
         return $CourseRegistrations
             ->filter(fn(CourseRegistration $cR) => !$Qualifications->exists(
-                fn(int $i, Qualification $q) => $q->hasTopicAndUser($cR->getTopic(), $cR->getUser())
+                fn(int $i, Qualification $q) => $q->hasTopicAndUser($cR->Topic, $cR->User)
             )
             );
     }

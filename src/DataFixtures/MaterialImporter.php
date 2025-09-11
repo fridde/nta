@@ -44,20 +44,20 @@ class MaterialImporter
                 $this->logger->info("Missing id for row " . $rowNr);
             }
             $this->logger->info("Row " . $row['id']);
-            $item->setId($row['id']);
-            $item->setPlacement($row['Plats']);
-            $item->setDetailedLabel($row['Label_intern']);
-            $item->setSimpleLabel($row['Label_user']);
-            $item->setStaffInfo([$row['kommentar till packaren']]);
+            $item->id = $row['id'];
+            $item->Placement = $row['Plats'];
+            $item->DetailedLabel = $row['Label_intern'];
+            $item->SimpleLabel = $row['Label_user'];
+            $item->StaffInfo = [$row['kommentar till packaren']];
 
             $orderInfo = $this->createOrderInfo($row['artikelnr på NTM'], $row['kommentar till beställare']);
-            $item->setOrderInfo($orderInfo);
-            $item->setUserInfo($row['kommentar till läraren']);
+            $item->OrderInfo = $orderInfo;
+            $item->UserInfo = $row['kommentar till läraren'];
             $this->rc->getEntityManager()->persist($item);
 
             $stock = new Inventory(InventoryType::STOCKROOM);
-            $stock->setItem($item);
-            $stock->setQuantity((int) $row['Antal lagret']);
+            $stock->Item = $item;
+            $stock->Quantity = (int)$row['Antal lagret'];
             $this->rc->getEntityManager()->persist($stock);
 
             $topicIds = self::getSplitValues($row, 'Låda');
@@ -72,20 +72,20 @@ class MaterialImporter
                 /** @var Topic $topic */
                 $topic = $this->rc->getTopicRepo()->find($topicId);
                 $this->logger->info(get_class($topic));
-                $inventory->setTopic($topic);
+                $inventory->Topic = $topic;
 
-                $inventory->setItem($item);
-                $inventory->setQuantity((int) $boxAmounts[$index]);
-                $inventory->setListRank($ranks[$index]);
+                $inventory->Item = $item;
+                $inventory->Quantity = (int)$boxAmounts[$index];
+                $inventory->ListRank = $ranks[$index];
                 $this->rc->getEntityManager()->persist($inventory);
 
 
                 if(!empty($extraAmounts) && (int) $extraAmounts[$index] > 0) {
                     $extraInventory = new Inventory(InventoryType::EXTRA_MATERIAL);
 
-                    $extraInventory->setItem($item);
-                    $extraInventory->setQuantity((int) $extraAmounts[$index]);
-                    $extraInventory->setTopic($topic);
+                    $extraInventory->Item = $item;
+                    $extraInventory->Quantity = (int)$extraAmounts[$index];
+                    $extraInventory->Topic = $topic;
                     $this->rc->getEntityManager()->persist($extraInventory);
                 }
             }

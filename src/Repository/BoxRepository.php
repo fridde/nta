@@ -12,7 +12,7 @@ class BoxRepository extends EntityRepository
     public function getBoxSetCount(): array
     {
         $boxSets = Coll::create($this->findAll())
-            ->map(fn(Box $box) => $box->getTopic()->getId() . '.' . $box->getId())
+            ->map(fn(Box $box) => $box->Topic . '.' . $box->id)
             ->unique()
             ->map(fn(string $box) => explode('.', $box)[0])
             ->toArray();

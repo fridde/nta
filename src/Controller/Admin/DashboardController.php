@@ -100,7 +100,7 @@ class DashboardController extends AbstractDashboardController
         $schools = Coll::create($this->rc->getSchoolRepo()->findAll());
 
         return $schools
-            ->map(fn(School $s) => MenuItem::linkToRoute($s->getName(), '', 'school_page', ['school' => $s->getId()]))
+            ->map(fn(School $s) => MenuItem::linkToRoute($s->getName(), '', 'school_page', ['school' => $s->id]))
             ->toArray();
     }
 

@@ -29,7 +29,7 @@ class Key
     }
 
 
-    public function setSalt(string $salt = null): self
+    public function setSalt(string|null $salt = null): self
     {
         $this->salt = $salt ?? substr(md5(microtime()), 0, 5);
 
