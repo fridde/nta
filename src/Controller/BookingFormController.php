@@ -56,11 +56,11 @@ class BookingFormController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Booking $thisBooking */
             $thisBooking = $form->getData();
-            $nrBoxes = $nrBoxesLeft[$thisBooking->Period->id][$thisBooking->Topic];
+            $nrBoxes = $nrBoxesLeft[$thisBooking->Period->id][$thisBooking->Topic->id];
             if($thisBooking->NrBoxes > $nrBoxes){
                 throw new \Exception('Det finns inte så många lådor som du vill ha!');
             }
-            $boxesForTopic = $boxesLeft[$thisBooking->Period->id][$thisBooking->Topic];
+            $boxesForTopic = $boxesLeft[$thisBooking->Period->id][$thisBooking->Topic->id];
             foreach(range(1, $thisBooking->NrBoxes) as $boxCount){
                 $thisBooking->addBox($boxesForTopic[$boxCount]);
             }
@@ -90,7 +90,7 @@ class BookingFormController extends AbstractController
             foreach($boxes as $box) {
                 /** @var Box $box */
                 if(!$box->hasBooking($period)) {
-                    $return[$periodId][$box->Topic][] = $box;
+                    $return[$periodId][$box->Topic->id][] = $box;
                 }
             }
         }
@@ -105,7 +105,7 @@ class BookingFormController extends AbstractController
             foreach ($topics as $topicId => $boxes) {
                 $topic = $topicRepo->find($topicId);
                 /** @var Topic $topic */
-                $boxesLeft[$period][$topicId] = $topic->needsBoxes() ? count($boxes) : 999;  // some arbitrary high number
+                $boxesLeft[$period][$topicId] = $topic->NeedsBoxes ? count($boxes) : 999;  // some arbitrary high number
             }
         }
 

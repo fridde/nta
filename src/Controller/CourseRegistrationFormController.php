@@ -67,13 +67,13 @@ class CourseRegistrationFormController extends AbstractController
 
         foreach ($qualifications as $qualification) {
             /** @var Qualification $qualification */
-            $userId = $qualification->User;
+            $userId = $qualification->User->id;
             $return[$userId] ??= [];
             $return[$userId][] = $qualification->Topic;
         }
         foreach ($courseRegistrations as $courseRegistration) {
             /** @var CourseRegistration $courseRegistration */
-            $userId = $courseRegistration->User;
+            $userId = $courseRegistration->User->id;
             $return[$userId] ??= [];
             $return[$userId][] = $courseRegistration->Topic;
         }

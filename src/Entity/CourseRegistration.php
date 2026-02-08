@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CourseRegistrationRepository;
+use App\Utils\Attributes\ConvertToEntityFirst;
 use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,9 +17,11 @@ class CourseRegistration
     public ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ConvertToEntityFirst]
     public User $User;
 
     #[ORM\ManyToOne(targetEntity: Topic::class)]
+    #[ConvertToEntityFirst]
     public Topic $Topic;
 
     #[ORM\Column]

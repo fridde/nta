@@ -76,8 +76,6 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-
-
         $this->om = $manager;
 
         $reader = IOFactory::createReader('Ods');
@@ -107,7 +105,7 @@ class AppFixtures extends Fixture
             $rows = array_map(fn($r) => array_combine($headers, $r), $rows);
 
             foreach ($rows as $row) {
-                //dump(json_encode($row));
+
                 if (in_array($title, self::$manyToMany, true)) {
                     $this->combineManyToMany($row, $title);
                     continue;
@@ -117,7 +115,7 @@ class AppFixtures extends Fixture
                 $entity = $this->$createMethod($row);
 
                 $specialCases = self::$specialCases[$title] ?? [];
-                $this->setStandardValues($entity, $row, $specialCases);
+                $this->setValues($entity, $row, $specialCases);
 
                 $this->om->persist($entity);
 
@@ -245,7 +243,7 @@ class AppFixtures extends Fixture
         }
     }
 
-    private function setStandardValues($object, $row, $exceptions = []): void
+    private function setValues($object, $row, $exceptions = []): void
     {
         $this->setShortToLongArray();   // =>  ['User' => '\App\Entity\User', ...]
 
@@ -267,8 +265,7 @@ class AppFixtures extends Fixture
             if (in_array($header, self::$convertToDate, true)) {
                 $value = empty($value) ? null : new Carbon($value);
             }
-            $setterMethod = 'set' . ucfirst($header);
-            $object->$setterMethod($value);
+            $object->$header = $value;  // automatically uses setter
         }
     }
 

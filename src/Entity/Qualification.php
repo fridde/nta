@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\QualificationRepository;
+use App\Utils\Attributes\ConvertToEntityFirst;
 use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,9 +16,11 @@ class Qualification
     public ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'Qualifications')]
+    #[ConvertToEntityFirst]
     public User $User;
 
     #[ORM\ManyToOne(targetEntity: Topic::class)]
+    #[ConvertToEntityFirst]
     public Topic $Topic;
 
     #[ORM\Column]
@@ -25,8 +28,8 @@ class Qualification
 
     public function hasTopicAndUser(Topic $Topic, User $User): bool
     {
-        $sameTopic = $this->Topic === $Topic->id;
+        $sameTopic = $this->Topic->id === $Topic->id;
 
-        return $sameTopic && $this->User === $User->id;
+        return $sameTopic && $this->User->id === $User->id;
     }
 }

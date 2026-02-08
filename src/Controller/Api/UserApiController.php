@@ -77,7 +77,7 @@ class UserApiController extends AbstractController
             $msg .= 'Kontakta oss ifall detta bör ändras!';
 
             return $this->asJson([
-                'error' => sprintf($msg, $user->Mail, $user->School->getName())
+                'error' => sprintf($msg, $user->Mail, $user->School->Name)
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -96,9 +96,9 @@ class UserApiController extends AbstractController
     public function updateSingleEntity($e, array $data = []): void
     {
         foreach ($data as $attribute => $newValue) {
-            $setMethod = 'set' . ucfirst($attribute);
-            $newValue = $this->convertToEntityIfNecessary($e, $setMethod, $newValue);
-            $e->$setMethod($newValue);
+//            $setMethod = 'set' . ucfirst($attribute);
+            $newValue = $this->convertToEntityIfNecessary($e, $attribute, $newValue);
+            $e->$attribute = $newValue;
         }
         $this->em->persist($e);
     }
@@ -112,25 +112,23 @@ class UserApiController extends AbstractController
     }
 
 
-    private function convertToEntityIfNecessary($e, string $setMethod, $value): mixed
+    private function convertToEntityIfNecessary($e, string $attribute, $value): mixed
     {
         $reflector = new \ReflectionClass($e);
-        $method = $reflector->getMethod($setMethod);
-        $attributes = $method->getAttributes(ConvertToEntityFirst::class);
+        $property = $reflector->getProperty($attribute);
+        $attributes = $property->getAttributes(ConvertToEntityFirst::class);
         if (empty($attributes)) {
             return $value;
         }
-        $parameter = $method->getParameters()[0];
-        /** @var ReflectionNamedType $type */
-        $type = $parameter->getType();
+        $expectedEntityClass = $property->getType()->getName();
 
-        if (is_object($value) && \str_ends_with(get_class($value), $type->getName())) {  // this covers both the FQCN and the short version
+        if (is_object($value) && \str_ends_with(get_class($value), $expectedEntityClass)) {  // this covers both the FQCN and the short version
             return $value;
         }
 
-        $entity = $this->em->find($type->getName(), $value);
+        $entity = $this->em->find($expectedEntityClass, $value);
         if (empty($entity)) {
-            throw new \RuntimeException('An entity of the type ' . $type->getName() . ' and id ' . $value . ' does not exist');
+            throw new \RuntimeException('An entity of the type ' . $expectedEntityClass . ' and id ' . $value . ' does not exist');
         }
 
         return $entity;

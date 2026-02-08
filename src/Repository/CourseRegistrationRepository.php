@@ -24,7 +24,7 @@ class CourseRegistrationRepository extends EntityRepository
     {
         $result = [];
         $CourseRegistrations->walk(function (CourseRegistration $cR) use (&$result) {
-            $tId = $cR->Topic;
+            $tId = $cR->Topic->id;
             $result[$tId] ??= Coll::create();
             $result[$tId]->add($cR);
         });

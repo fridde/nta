@@ -123,7 +123,7 @@ class AzureAuthenticator extends AbstractAuthenticator
                 default => false
             };
             if ($missing && $propertyValue !== null) {
-                $user->{'set' . $propertyName}($propertyValue);
+                $user->$propertyName = $propertyValue;
             }
         }
 

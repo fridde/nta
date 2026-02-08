@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Enums\UpdateType;
 use App\Repository\BoxRepository;
+use App\Utils\Attributes\ConvertToEntityFirst;
 use App\Utils\Coll;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,6 +20,7 @@ class Box
 
 
     #[ORM\ManyToOne(targetEntity: Topic::class)]
+    #[ConvertToEntityFirst]
     public Topic $Topic;
 
     #[Orm\ManyToMany(targetEntity: Booking::class, inversedBy: "Boxes")]

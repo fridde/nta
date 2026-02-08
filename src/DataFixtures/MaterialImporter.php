@@ -13,6 +13,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MaterialImporter
 {
+    private const int MAX_ROW = 339;  // subtract two rows because first row doesn't count and array is 0-indexed.
+
 
     public function __construct(
         private readonly RepoContainer       $rc,
@@ -35,16 +37,17 @@ class MaterialImporter
     {
 
         foreach ($this->getData() as $rowNr => $row) {
-            if (self::isEmptyRow($row)) {
+            if ($rowNr > self::MAX_ROW || self::isEmptyRow($row)) {
                 continue;
             }
-
+            //dump($rowNr);
             $item = new Item();
             if (empty($row['id'])) {
                 $this->logger->info("Missing id for row " . $rowNr);
             }
             $this->logger->info("Row " . $row['id']);
             $item->id = $row['id'];
+            //dump($item->id);
             $item->Placement = $row['Plats'];
             $item->DetailedLabel = $row['Label_intern'];
             $item->SimpleLabel = $row['Label_user'];
@@ -66,6 +69,7 @@ class MaterialImporter
             $extraAmounts = self::getSplitValues($row, 'Förbrukning');
 
             foreach ($topicIds as $index => $topicId) {
+
                 $inventory = new Inventory(InventoryType::BOX);
 
 

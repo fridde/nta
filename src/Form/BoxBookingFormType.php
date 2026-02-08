@@ -45,12 +45,15 @@ class BoxBookingFormType extends AbstractType
                 'class' => User::class,
                 'choices' => $options['users'],
             ])
+            ->add('NrBoxes', IntegerType::class, [
+                'label' => 'Antal lådor',
+                'data' => 1,
+            ])
             ->add('NrStudents', IntegerType::class, [
                 'label' => 'Antal elever som ska nyttja lådan/lådorna',
                 'help' => 'För hur många elever ska materialet i dessa lådor (eller denna låda) räcka?',
                 'data' => 30,
             ])
-            ->add('NrBoxes', null, ['label' => 'Antal lådor'])
             ->add('Send', SubmitType::class, ['label' => 'Boka']);
     }
 

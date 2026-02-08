@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\InventoryStatusUpdateRepository;
+use App\Utils\Attributes\ConvertToEntityFirst;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: InventoryStatusUpdateRepository::class)]
@@ -16,6 +17,7 @@ class InventoryStatusUpdate
     }
 
     #[ORM\ManyToOne(targetEntity: Item::class, inversedBy: 'InventoryStatusUpdates')]
+    #[ConvertToEntityFirst]
     public Item $Item;
 
     #[ORM\Column]

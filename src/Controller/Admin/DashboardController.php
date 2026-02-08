@@ -11,6 +11,8 @@ use App\Entity\Topic;
 use App\Entity\User;
 use App\Utils\Coll;
 use App\Utils\RepoContainer;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -19,6 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[AdminDashboard('/admin/', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
     private const array MENU = [
@@ -32,9 +35,9 @@ class DashboardController extends AbstractDashboardController
             ['Föremål', 'flask', Item::class]
         ],
         'routes' => [
-            ['Lådstatus', 'box', 'tools_box_status'],
-            ['Uppdatera lådstatus', 'truck-loading', 'tools_update_box_status'],
-            ['Skapa inventeringslista', 'clipboard-list', 'tools_create_box_inventory'],
+            ['Lådstatus', 'box', 'admin_show_box_status'],
+            ['Uppdatera lådstatus', 'truck-loading', 'admin_update_box_status'],
+            ['Skapa inventeringslista', 'clipboard-list', 'admin_create_box_inventory'],
 //            ['Skolor besöksordning', 'sort-numeric-down', 'tools_order_schools'],
 //            ['Skapa API-keys', 'key', 'tools_create_api_keys'],
 //            ['Kolla upp användare', 'magnifying-glass' ,'tools_lookup_profile', ['mail' => '1']],
@@ -52,7 +55,6 @@ class DashboardController extends AbstractDashboardController
     }
 
 
-    #[Route('/admin/', name: 'admin')]
     public function index(): Response
     {
         return $this->redirect(
@@ -100,7 +102,7 @@ class DashboardController extends AbstractDashboardController
         $schools = Coll::create($this->rc->getSchoolRepo()->findAll());
 
         return $schools
-            ->map(fn(School $s) => MenuItem::linkToRoute($s->getName(), '', 'school_page', ['school' => $s->id]))
+            ->map(fn(School $s) => MenuItem::linkToRoute($s->Name, '', 'school_page', ['school' => $s->id]))
             ->toArray();
     }
 

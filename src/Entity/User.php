@@ -50,6 +50,7 @@ class User implements UserInterface
     }
 
     #[ORM\ManyToOne(targetEntity: School::class, inversedBy: "Users")]
+    #[ConvertToEntityFirst]
     public School $School;
 
     #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: "BoxOwner")]

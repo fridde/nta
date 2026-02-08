@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BookingRepository;
+use App\Utils\Attributes\ConvertToEntityFirst;
 use App\Utils\Coll;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,12 +18,15 @@ class Booking
     public ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'Bookings')]
+    #[ConvertToEntityFirst]
     public User $BoxOwner;
 
     #[ORM\ManyToOne(targetEntity: Period::class, inversedBy: 'Bookings')]
+    #[ConvertToEntityFirst]
     public Period $Period;
 
     #[ORM\ManyToOne(targetEntity: Topic::class, inversedBy: 'Bookings')]
+    #[ConvertToEntityFirst]
     public Topic $Topic;
 
     #[ORM\Column]
@@ -32,6 +36,7 @@ class Booking
     public int $NrStudents = 30;
 
     #[ORM\ManyToOne(targetEntity:User::class)]
+    #[ConvertToEntityFirst]
     public ?User $Booker = null;
 
     #[ORM\ManyToMany(targetEntity: Box::class, mappedBy: 'Bookings')]

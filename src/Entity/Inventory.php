@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Enums\InventoryType;
 use App\Repository\InventoryRepository;
+use App\Utils\Attributes\ConvertToEntityFirst;
 use Doctrine\ORM\Mapping as ORM;
 use function Symfony\Component\Translation\t;
 
@@ -19,12 +20,14 @@ class Inventory
     public InventoryType $InventoryType;
 
     #[ORM\ManyToOne(targetEntity: Item::class)]
+    #[ConvertToEntityFirst]
     public Item $Item;
 
     #[ORM\Column]
     public int $Quantity;
 
     #[ORM\ManyToOne(targetEntity: Topic::class)]
+    #[ConvertToEntityFirst]
     public ?Topic $Topic = null;
 
     #[ORM\Column]
